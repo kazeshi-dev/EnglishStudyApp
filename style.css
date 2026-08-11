@@ -1,0 +1,97 @@
+:root {
+    --primary: #4CAF50;
+    --primary-hover: #3d9140;
+    --background: #121212;
+    --text: #ffffff;
+    --text-secondary: #bdbdbd;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+header {
+    text-align: center;
+    padding: 80px 20px 50px;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+header p {
+    color: #bdbdbd;
+    font-size: 1.1rem;
+}
+
+.menu {
+    max-width: 1000px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+
+    padding: 20px;
+}
+
+.menu-card {
+    padding: 30px;
+
+    background-color: #1c1c1c;
+    border: 1px solid #303030;
+    border-radius: 12px;
+}
+
+.menu-card h2 {
+    margin-bottom: 12px;
+    font-size: 1.5rem;
+}
+
+.menu-card p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.menu-card {
+    transition: 0.3s;
+}
+
+.menu-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+@media (max-width: 480px) {
+
+    header {
+        padding: 60px 20px 35px;
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+    }
+
+    header p {
+        font-size: 0.95rem;
+    }
+
+    .menu {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .menu-card {
+        padding: 25px 20px;
+    }
+
+}
