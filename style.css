@@ -95,3 +95,7 @@ header p {
     }
 
 }
+
+.flashcards-section {
+    display: none;
+}

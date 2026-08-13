@@ -8,6 +8,9 @@
     <title>English Study App</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <script src="script.js" defer></script>
+
 </head>
 
 <body>
@@ -22,7 +25,7 @@
 
         <section class="menu">
 
-            <article class="menu-card">
+            <article class="menu-card" id="flashcards">
                 <h2>Flashcards</h2>
                 <p>Practice vocabulary with interactive flashcards.</p>
             </article>
@@ -51,6 +54,22 @@
                 <h2>Progress</h2>
                 <p>Track your learning progress and daily streak.</p>
             </article>
+
+        </section>
+
+        <section class="flashcards-section" id="flashcards-section">
+
+            <h2>Flashcards</h2>
+
+            <div class="flashcard">
+
+                <h3 id="word">Apple</h3>
+
+                <p id="translation"></p>
+
+                <button id="reveal-button">Reveal</button>
+
+            </div>
 
         </section>
 
