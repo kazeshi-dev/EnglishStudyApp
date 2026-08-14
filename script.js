@@ -5,6 +5,7 @@ const flashcardsSection = document.querySelector("#flashcards-section");
 
 const revealButton = document.querySelector("#reveal-button");
 const nextButton = document.querySelector("#next-button");
+const previousButton = document.querySelector("#previous-button");
 
 const cardWord = document.querySelector("#card-word");
 const translation = document.querySelector("#translation");
@@ -54,6 +55,18 @@ nextButton.addEventListener("click", function () {
 
     cardWord.textContent = flashcardList[currentCard].word;
 
+    translation.textContent = "";
+    isRevealed = false;
+
+});
+
+previousButton.addEventListener("click", function () {
+
+    if (currentCard > 0) {
+        currentCard--;
+    }
+
+    cardWord.textContent = flashcardList[currentCard].word;
     translation.textContent = "";
     isRevealed = false;
 
