@@ -1,14 +1,13 @@
 console.log("English Study App loaded!");
 
 const flashcards = document.querySelector("#flashcards");
-
 const flashcardsSection = document.querySelector("#flashcards-section");
 
 const revealButton = document.querySelector("#reveal-button");
+const nextButton = document.querySelector("#next-button");
 
+const cardWord = document.querySelector("#card-word");
 const translation = document.querySelector("#translation");
-
-const wordElement = document.getElementById("word");
 
 let isRevealed = false;
 
@@ -16,6 +15,7 @@ let flashcard = {
     word: "Apple",
     translation: "Manzana"
 };
+
 let flashcard2 = {
     word: "House",
     translation: "Casa"
@@ -28,7 +28,7 @@ flashcardList.push(flashcard2);
 
 let currentCard = 0;
 
-wordElement.textContent = flashcardList[currentCard].word;
+cardWord.textContent = flashcardList[currentCard].word;
 
 revealButton.addEventListener("click", function () {
 
@@ -43,6 +43,19 @@ revealButton.addEventListener("click", function () {
         isRevealed = false;
 
     }
+
+});
+
+nextButton.addEventListener("click", function () {
+
+    if (currentCard < flashcardList.length - 1) {
+        currentCard++;
+    }
+
+    cardWord.textContent = flashcardList[currentCard].word;
+
+    translation.textContent = "";
+    isRevealed = false;
 
 });
 
