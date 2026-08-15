@@ -9,27 +9,39 @@ const previousButton = document.querySelector("#previous-button");
 
 const cardWord = document.querySelector("#card-word");
 const translation = document.querySelector("#translation");
+const cardProgress = document.querySelector(".card-progress");
 
 let isRevealed = false;
 
-let flashcard = {
-    word: "Apple",
-    translation: "Manzana"
-};
-
-let flashcard2 = {
-    word: "House",
-    translation: "Casa"
-};
-
-let flashcardList = [];
-
-flashcardList.push(flashcard);
-flashcardList.push(flashcard2);
+let flashcardList = [
+    {
+        word: "Apple",
+        translation: "Manzana"
+    },
+    {
+        word: "House",
+        translation: "Casa"
+    },
+    {
+        word: "Dog",
+        translation: "Perro"
+    },
+    {
+        word: "Water",
+        translation: "Agua"
+    },
+    {
+        word: "Book",
+        translation: "Libro"
+    }
+];
 
 let currentCard = 0;
 
+cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
+
 cardWord.textContent = flashcardList[currentCard].word;
+
 
 revealButton.addEventListener("click", function () {
 
@@ -54,6 +66,7 @@ nextButton.addEventListener("click", function () {
     }
 
     cardWord.textContent = flashcardList[currentCard].word;
+    cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
 
     translation.textContent = "";
     isRevealed = false;
@@ -67,11 +80,40 @@ previousButton.addEventListener("click", function () {
     }
 
     cardWord.textContent = flashcardList[currentCard].word;
+    cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
     translation.textContent = "";
     isRevealed = false;
 
 });
 
 flashcards.addEventListener("click", function () {
+
     flashcardsSection.style.display = "block";
+
+    const targetPosition = flashcardsSection.offsetTop;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+
+    const duration = 1000;
+    let startTime = null;
+
+    function animation(currentTime) {
+
+        if (startTime === null) {
+            startTime = currentTime;
+        }
+
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+
+        window.scrollTo(0, startPosition + distance * progress);
+
+        if (progress < 1) {
+            requestAnimationFrame(animation);
+        }
+
+    }
+
+    requestAnimationFrame(animation);
+
 });
