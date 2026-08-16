@@ -204,3 +204,9 @@ header p {
 .navigation button:hover {
     transform: translateY(-3px);
 }
+
+.navigation button:disabled {
+    color: var(--text);
+    background-color: var(--text-secondary);
+    cursor: not-allowed;
+}

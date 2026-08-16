@@ -38,6 +38,15 @@ let flashcardList = [
 
 let currentCard = 0;
 
+function updateNavigationButtons() {
+
+    previousButton.disabled = currentCard === 0;
+    nextButton.disabled = currentCard === flashcardList.length - 1;
+
+}
+
+updateNavigationButtons();
+
 cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
 
 cardWord.textContent = flashcardList[currentCard].word;
@@ -49,11 +58,13 @@ revealButton.addEventListener("click", function () {
 
         translation.textContent = flashcardList[currentCard].translation;
         isRevealed = true;
+        revealButton.textContent = "Hide";
 
     } else {
 
         translation.textContent = "";
         isRevealed = false;
+        revealButton.textContent = "Reveal";
 
     }
 
@@ -70,6 +81,9 @@ nextButton.addEventListener("click", function () {
 
     translation.textContent = "";
     isRevealed = false;
+    revealButton.textContent = "Reveal";
+
+     updateNavigationButtons();
 
 });
 
@@ -83,6 +97,8 @@ previousButton.addEventListener("click", function () {
     cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
     translation.textContent = "";
     isRevealed = false;
+
+    updateNavigationButtons();
 
 });
 
