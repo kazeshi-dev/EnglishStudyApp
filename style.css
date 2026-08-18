@@ -210,3 +210,28 @@ header p {
     background-color: var(--text-secondary);
     cursor: not-allowed;
 }
+
+.reading-section {
+    display: none;
+}
+
+.reading-card h3 {
+    margin-bottom: 20px;
+}
+
+.reading-card p {
+    line-height: 1.6;
+    margin: 0;
+}
+
+.reading-question {
+    margin-top: 30px;
+}
+
+.answer-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
