@@ -11,6 +11,39 @@ const questionText = document.querySelector("#question-text");
 const answerOptions = document.querySelector(".answer-options");
 const checkButton = document.querySelector("#check-button");
 const answerResult = document.querySelector("#answer-result");
+const readingProgress = document.querySelector(".reading-progress");
+
+const previousReadingButton = document.querySelector("#previous-reading-button");
+const nextReadingButton = document.querySelector("#next-reading-button");
+
+function updateReadingNavigationButtons() {
+
+    previousReadingButton.disabled = currentReading === 0;
+    nextReadingButton.disabled = currentReading === readingList.length - 1;
+
+}
+
+nextReadingButton.addEventListener("click", function () {
+
+    if (currentReading < readingList.length - 1) {
+        currentReading++;
+    }
+
+    updateReading();
+    updateReadingNavigationButtons();
+
+});
+
+previousReadingButton.addEventListener("click", function () {
+
+    if (currentReading > 0) {
+        currentReading--;
+    }
+
+    updateReading();
+    updateReadingNavigationButtons();
+
+});
 
 checkButton.addEventListener("click", function () {
 
@@ -74,6 +107,7 @@ let flashcardList = [
 ];
 
 let readingList = [
+
     {
         title: "A Day at the Park",
         text: "John went to the park. He met his friends and they played football.",
@@ -84,34 +118,96 @@ let readingList = [
             "He studied"
         ],
         correctAnswer: 0
+    },
+
+    {
+        title: "A Day at School",
+        text: "Maria went to school early. She studied English and talked with her teacher.",
+        question: "What did Maria study?",
+        answers: [
+            "English",
+            "Math",
+            "History"
+        ],
+        correctAnswer: 0
+    },
+
+    {
+        title: "A Morning Walk",
+        text: "David woke up early and went for a walk. He enjoyed the fresh air and saw many birds.",
+        question: "What did David see?",
+        answers: [
+            "Many birds",
+            "His teacher",
+            "A football game"
+        ],
+        correctAnswer: 0
+    },
+
+    {
+        title: "A Rainy Day",
+        text: "Sofia stayed at home because it was raining. She read a book and drank some hot chocolate.",
+        question: "Why did Sofia stay at home?",
+        answers: [
+            "Because it was raining",
+            "Because she was studying",
+            "Because she went to the park"
+        ],
+        correctAnswer: 0
+    },
+
+    {
+        title: "A Visit to the Library",
+        text: "Lucas visited the library after school. He found a book about animals and read it quietly.",
+        question: "What kind of book did Lucas find?",
+        answers: [
+            "A book about animals",
+            "A book about sports",
+            "A book about music"
+        ],
+        correctAnswer: 0
     }
+
 ];
 
 let currentReading = 0;
+updateReadingNavigationButtons();
 
-readingTitle.textContent = readingList[currentReading].title;
-readingText.textContent = readingList[currentReading].text;
-questionText.textContent = readingList[currentReading].question;
+function updateReading() {
 
-readingList[currentReading].answers.forEach(function (answer, index) {
+    readingTitle.textContent = readingList[currentReading].title;
+    readingText.textContent = readingList[currentReading].text;
+    questionText.textContent = readingList[currentReading].question;
 
-    const label = document.createElement("label");
-    label.classList.add("answer-option");
+    readingProgress.textContent = `Reading ${currentReading + 1} / ${readingList.length}`;
 
-    const input = document.createElement("input");
-    input.type = "radio";
-    input.name = "answer";
-    input.value = index;
+    answerOptions.innerHTML = "";
 
-    const span = document.createElement("span");
-    span.textContent = answer;
+    answerResult.textContent = "";
 
-    label.appendChild(input);
-    label.appendChild(span);
+    readingList[currentReading].answers.forEach(function (answer, index) {
 
-    answerOptions.appendChild(label);
+        const label = document.createElement("label");
+        label.classList.add("answer-option");
 
-});
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "answer";
+        input.value = index;
+
+        const span = document.createElement("span");
+        span.textContent = answer;
+
+        label.appendChild(input);
+        label.appendChild(span);
+
+        answerOptions.appendChild(label);
+
+    });
+
+}
+
+updateReading();
 
 let currentCard = 0;
 
@@ -174,6 +270,7 @@ previousButton.addEventListener("click", function () {
     cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
     translation.textContent = "";
     isRevealed = false;
+    revealButton.textContent = "Reveal";
 
     updateNavigationButtons();
 
