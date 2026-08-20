@@ -52,6 +52,7 @@ checkButton.addEventListener("click", function () {
     if (selectedAnswer === null) {
 
         answerResult.textContent = "Please select an answer.";
+        answerResult.className = "no-answer";
 
         return;
 
@@ -60,19 +61,48 @@ checkButton.addEventListener("click", function () {
     if (Number(selectedAnswer.value) === readingList[currentReading].correctAnswer) {
 
         answerResult.textContent = "Correct!";
+        answerResult.className = "correct";
 
     } else {
 
         answerResult.textContent = "Incorrect!";
+        answerResult.className = "incorrect";
 
     }
 
-    });
-
-reading.addEventListener("click", function () {
-    readingSection.style.display = "block";
 });
 
+reading.addEventListener("click", function () {
+
+    readingSection.style.display = "block";
+
+    const targetPosition = readingSection.offsetTop;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+
+    const duration = 1000;
+    let startTime = null;
+
+    function animation(currentTime) {
+
+        if (startTime === null) {
+            startTime = currentTime;
+        }
+
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+
+        window.scrollTo(0, startPosition + distance * progress);
+
+        if (progress < 1) {
+            requestAnimationFrame(animation);
+        }
+
+    }
+
+    requestAnimationFrame(animation);
+
+});
 const revealButton = document.querySelector("#reveal-button");
 const nextButton = document.querySelector("#next-button");
 const previousButton = document.querySelector("#previous-button");
@@ -184,6 +214,7 @@ function updateReading() {
     answerOptions.innerHTML = "";
 
     answerResult.textContent = "";
+    answerResult.className = "";
 
     readingList[currentReading].answers.forEach(function (answer, index) {
 

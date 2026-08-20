@@ -10,6 +10,8 @@ html {
     --border: #303030;
     --text: #ffffff;
     --text-secondary: #bdbdbd;
+    --success: #4CAF50;
+    --error: #e57373;
 }
 
 * {
@@ -213,18 +215,102 @@ header p {
 
 .reading-section {
     display: none;
+    min-height: 100vh;
+    padding: 80px 20px;
+
+    text-align: center;
+}
+
+.reading-card {
+    max-width: 700px;
+    margin: 40px auto 0;
+    padding: 35px;
+
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.reading-progress {
+    display: block;
+    margin-bottom: 15px;
+
+    color: var(--text-secondary);
+    font-size: 14px;
 }
 
 .reading-card h3 {
-    margin-bottom: 20px;
+    margin: 0 0 20px;
+
+    font-size: 26px;
 }
 
 .reading-card p {
-    line-height: 1.6;
     margin: 0;
+
+    font-size: 16px;
+    line-height: 1.7;
 }
 
 .reading-question {
+    margin-top: 30px;
+    padding-top: 25px;
+
+    border-top: 1px solid var(--border);
+}
+
+.reading-question h4 {
+    margin: 0 0 20px;
+
+    font-size: 18px;
+}
+
+.answer-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 15px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+.answer-option:hover {
+    transform: translateY(-2px);
+}
+
+.answer-option:has(input:checked) {
+    border-color: var(--primary);
+}
+
+#check-button {
+    margin-top: 25px;
+
+    padding: 10px 24px;
+
+    background-color: var(--primary);
+    color: var(--text);
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+#check-button:hover {
+    background-color: var(--primary-hover);
+}
+
+.reading-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
     margin-top: 30px;
 }
 
@@ -234,4 +320,37 @@ header p {
     gap: 10px;
     margin-bottom: 12px;
     cursor: pointer;
+}
+
+#answer-result {
+    margin: 20px 0 0;
+    font-weight: 500;
+    text-align: center;
+}
+
+#answer-result.correct {
+    color: var(--primary);
+}
+
+#answer-result.incorrect {
+    color: var(--error);
+}
+
+#previous-reading-button,
+#next-reading-button {
+    padding: 10px 20px;
+
+    background-color: var(--surface);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+#previous-reading-button:disabled,
+#next-reading-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
