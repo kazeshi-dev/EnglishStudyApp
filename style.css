@@ -339,3 +339,11 @@ header p {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.listening-section {
+    display: none;
+    min-height: 100vh;
+    padding: 80px 20px;
+
+    text-align: center;
+}

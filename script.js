@@ -1,5 +1,14 @@
 console.log("English Study App loaded!");
 
+const listeningTitle = document.querySelector("#listening-title");
+const listeningQuestionText = document.querySelector("#listening-question-text");
+const listeningAnswerOptions = document.querySelector(".listening-answer-options");
+const checkListeningButton = document.querySelector("#check-listening-button");
+const listeningAnswerResult = document.querySelector("#listening-answer-result");
+const listeningProgress = document.querySelector(".listening-progress");
+const previousListeningButton = document.querySelector("#previous-listening-button");
+const nextListeningButton = document.querySelector("#next-listening-button");
+
 const flashcards = document.querySelector("#flashcards");
 const flashcardsSection = document.querySelector("#flashcards-section");
 
@@ -12,6 +21,9 @@ const answerOptions = document.querySelector(".answer-options");
 const checkButton = document.querySelector("#check-button");
 const answerResult = document.querySelector("#answer-result");
 const readingProgress = document.querySelector(".reading-progress");
+
+const listening = document.querySelector("#listening");
+const listeningSection = document.querySelector("#listening-section");
 
 const previousReadingButton = document.querySelector("#previous-reading-button");
 const nextReadingButton = document.querySelector("#next-reading-button");
@@ -69,6 +81,65 @@ checkButton.addEventListener("click", function () {
         answerResult.className = "incorrect";
 
     }
+
+});
+
+checkListeningButton.addEventListener("click", function () {
+
+    const selectedAnswer = document.querySelector('input[name="listening-answer"]:checked');
+
+    if (selectedAnswer === null) {
+
+        listeningAnswerResult.textContent = "Please select an answer.";
+        listeningAnswerResult.className = "no-answer";
+
+        return;
+
+    }
+
+    if (Number(selectedAnswer.value) === listeningList[currentListening].correctAnswer) {
+
+        listeningAnswerResult.textContent = "Correct!";
+        listeningAnswerResult.className = "correct";
+
+    } else {
+
+        listeningAnswerResult.textContent = "Incorrect!";
+        listeningAnswerResult.className = "incorrect";
+
+    }
+
+});
+
+listening.addEventListener("click", function () {
+
+    listeningSection.style.display = "block";
+
+    const targetPosition = listeningSection.offsetTop;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+
+    const duration = 1000;
+    let startTime = null;
+
+    function animation(currentTime) {
+
+        if (startTime === null) {
+            startTime = currentTime;
+        }
+
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+
+        window.scrollTo(0, startPosition + distance * progress);
+
+        if (progress < 1) {
+            requestAnimationFrame(animation);
+        }
+
+    }
+
+    requestAnimationFrame(animation);
 
 });
 
@@ -200,7 +271,135 @@ let readingList = [
 
 ];
 
+let listeningList = [
+
+    {
+        title: "A Morning Routine",
+        question: "What does Sarah drink for breakfast?",
+        answers: [
+            "Orange juice",
+            "Coffee",
+            "Milk"
+        ],
+        correctAnswer: 0
+    },
+
+    {
+        title: "At the Restaurant",
+        question: "What does Tom order?",
+        answers: [
+            "A chicken sandwich and water",
+            "A salad and juice",
+            "A hamburger and milk"
+        ],
+        correctAnswer: 0
+    },
+
+    {
+        title: "Going to School",
+        question: "How does Emma go to school?",
+        answers: [
+            "By bus",
+            "By car",
+            "On foot"
+        ],
+        correctAnswer: 2
+    },
+
+    {
+        title: "A Weekend Plan",
+        question: "What is David going to do on Saturday?",
+        answers: [
+            "Visit his grandparents",
+            "Play football with his friends",
+            "Study at home"
+        ],
+        correctAnswer: 1
+    },
+
+    {
+        title: "At the Store",
+        question: "How many apples does Lisa buy?",
+        answers: [
+            "Two",
+            "Three",
+            "Four"
+        ],
+        correctAnswer: 1
+    }
+
+];
+
+let currentListening = 0;
+
+function updateListeningNavigationButtons() {
+
+    previousListeningButton.disabled = currentListening === 0;
+    nextListeningButton.disabled = currentListening === listeningList.length - 1;
+
+}
+
+function updateListening() {
+
+    listeningTitle.textContent = listeningList[currentListening].title;
+
+    listeningQuestionText.textContent = listeningList[currentListening].question;
+
+    listeningProgress.textContent = `Listening ${currentListening + 1} / ${listeningList.length}`;
+
+    listeningAnswerOptions.innerHTML = "";
+
+    listeningAnswerResult.textContent = "";
+    listeningAnswerResult.className = "";
+
+    listeningList[currentListening].answers.forEach(function (answer, index) {
+
+        const label = document.createElement("label");
+        label.classList.add("answer-option");
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "listening-answer";
+        input.value = index;
+
+        const span = document.createElement("span");
+        span.textContent = answer;
+
+        label.appendChild(input);
+        label.appendChild(span);
+
+        listeningAnswerOptions.appendChild(label);
+
+    });
+
+}
+updateListening();
+updateListeningNavigationButtons();
+
+nextListeningButton.addEventListener("click", function () {
+
+    if (currentListening < listeningList.length - 1) {
+        currentListening++;
+    }
+
+    updateListening();
+    updateListeningNavigationButtons();
+
+});
+
+previousListeningButton.addEventListener("click", function () {
+
+    if (currentListening > 0) {
+        currentListening--;
+    }
+
+    updateListening();
+    updateListeningNavigationButtons();
+
+});
+
 let currentReading = 0;
+
 updateReadingNavigationButtons();
 
 function updateReading() {
