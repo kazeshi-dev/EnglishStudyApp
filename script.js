@@ -1,5 +1,17 @@
 console.log("English Study App loaded!");
 
+const writing = document.querySelector("#writing");
+const writingSection = document.querySelector("#writing-section");
+
+const writingTitle = document.querySelector("#writing-title");
+const writingPrompt = document.querySelector("#writing-prompt");
+const writingAnswer = document.querySelector("#writing-answer");
+const checkWritingButton = document.querySelector("#check-writing-button");
+const writingResult = document.querySelector("#writing-result");
+const writingProgress = document.querySelector(".writing-progress");
+const previousWritingButton = document.querySelector("#previous-writing-button");
+const nextWritingButton = document.querySelector("#next-writing-button");
+
 const listeningTitle = document.querySelector("#listening-title");
 const listeningQuestionText = document.querySelector("#listening-question-text");
 const listeningAnswerOptions = document.querySelector(".listening-answer-options");
@@ -174,6 +186,72 @@ reading.addEventListener("click", function () {
     requestAnimationFrame(animation);
 
 });
+
+writing.addEventListener("click", function () {
+
+    writingSection.style.display = "block";
+
+    const targetPosition = writingSection.offsetTop;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+
+    const duration = 1000;
+    let startTime = null;
+
+    function animation(currentTime) {
+
+            if (startTime === null) {
+                startTime = currentTime;
+            }
+
+            const elapsedTime = currentTime - startTime;
+            const progress = Math.min(elapsedTime / duration, 1);
+
+            window.scrollTo(0, startPosition + distance * progress);
+
+            if (progress < 1) {
+                requestAnimationFrame(animation);
+            }
+
+        }
+
+        requestAnimationFrame(animation);
+
+    });
+
+checkWritingButton.addEventListener("click", function () {
+
+    const userAnswer = writingAnswer.value.trim().toLowerCase();
+
+    if (userAnswer === "") {
+
+        writingResult.textContent = "Please write an answer.";
+        writingResult.className = "no-answer";
+
+        return;
+
+    }
+
+    const keywords = writingList[currentWriting].keywords;
+
+    const hasKeyword = keywords.some(function (keyword) {
+        return userAnswer.includes(keyword.toLowerCase());
+    });
+
+    if (hasKeyword) {
+
+        writingResult.textContent = "Good job!";
+        writingResult.className = "correct";
+
+    } else {
+
+        writingResult.textContent = "Try again.";
+        writingResult.className = "incorrect";
+
+    }
+
+});
+
 const revealButton = document.querySelector("#reveal-button");
 const nextButton = document.querySelector("#next-button");
 const previousButton = document.querySelector("#previous-button");
@@ -331,6 +409,109 @@ let listeningList = [
 ];
 
 let currentListening = 0;
+
+let writingList = [
+
+    {
+        title: "My Morning",
+        prompt: "Write 2–3 sentences about your morning routine.",
+        keywords: [
+            "morning",
+            "wake",
+            "breakfast"
+        ]
+    },
+
+    {
+        title: "My Favorite Food",
+        prompt: "Write 2–3 sentences about your favorite food.",
+        keywords: [
+            "food",
+            "favorite",
+            "eat"
+        ]
+    },
+
+    {
+        title: "My Weekend",
+        prompt: "Write 2–3 sentences about what you do on the weekend.",
+        keywords: [
+            "weekend",
+            "Saturday",
+            "Sunday"
+        ]
+    },
+
+    {
+        title: "My Family",
+        prompt: "Write 2–3 sentences about your family.",
+        keywords: [
+            "family",
+            "mother",
+            "father"
+        ]
+    },
+
+    {
+        title: "My Favorite Hobby",
+        prompt: "Write 2–3 sentences about your favorite hobby.",
+        keywords: [
+            "hobby",
+            "like",
+            "enjoy"
+        ]
+    }
+
+];
+
+let currentWriting = 0;
+
+function updateWriting() {
+
+    writingTitle.textContent = writingList[currentWriting].title;
+
+    writingPrompt.textContent = writingList[currentWriting].prompt;
+
+    writingProgress.textContent = `Writing ${currentWriting + 1} / ${writingList.length}`;
+
+    writingAnswer.value = "";
+
+    writingResult.textContent = "";
+    writingResult.className = "";
+
+}
+
+updateWriting();
+updateWritingNavigationButtons();
+
+function updateWritingNavigationButtons() {
+
+    previousWritingButton.disabled = currentWriting === 0;
+    nextWritingButton.disabled = currentWriting === writingList.length - 1;
+
+}
+
+nextWritingButton.addEventListener("click", function () {
+
+    if (currentWriting < writingList.length - 1) {
+        currentWriting++;
+    }
+
+    updateWriting();
+    updateWritingNavigationButtons();
+
+});
+
+previousWritingButton.addEventListener("click", function () {
+
+    if (currentWriting > 0) {
+        currentWriting--;
+    }
+
+    updateWriting();
+    updateWritingNavigationButtons();
+
+});
 
 function updateListeningNavigationButtons() {
 
