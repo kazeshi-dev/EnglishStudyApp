@@ -1,5 +1,18 @@
 console.log("English Study App loaded!");
 
+const miniGames = document.querySelector("#mini-games");
+const miniGamesSection = document.querySelector("#mini-games-section");
+
+const gameProgress = document.querySelector(".game-progress");
+const gameTitle = document.querySelector("#game-title");
+const scrambledWord = document.querySelector("#scrambled-word");
+const gameAnswer = document.querySelector("#game-answer");
+const checkGameButton = document.querySelector("#check-game-button");
+const gameResult = document.querySelector("#game-result");
+
+const previousGameButton = document.querySelector("#previous-game-button");
+const nextGameButton = document.querySelector("#next-game-button");
+
 const writing = document.querySelector("#writing");
 const writingSection = document.querySelector("#writing-section");
 
@@ -465,6 +478,115 @@ let writingList = [
 ];
 
 let currentWriting = 0;
+
+let gameList = [
+
+    {
+        title: "Word Scramble",
+        scrambled: "pplea",
+        answer: "apple"
+    },
+
+    {
+        title: "Word Scramble",
+        scrambled: "esuho",
+        answer: "house"
+    },
+
+    {
+        title: "Word Scramble",
+        scrambled: "god",
+        answer: "dog"
+    },
+
+    {
+        title: "Word Scramble",
+        scrambled: "retaw",
+        answer: "water"
+    },
+
+    {
+        title: "Word Scramble",
+        scrambled: "kboo",
+        answer: "book"
+    }
+
+];
+
+let currentGame = 0;
+
+function updateGame() {
+
+    gameProgress.textContent = `Game ${currentGame + 1} / ${gameList.length}`;
+
+    gameTitle.textContent = gameList[currentGame].title;
+
+    scrambledWord.textContent = gameList[currentGame].scrambled;
+
+    gameAnswer.value = "";
+
+    gameResult.textContent = "";
+    gameResult.className = "";
+
+}
+updateGame();
+updateGameNavigationButtons();
+
+function updateGameNavigationButtons() {
+
+    previousGameButton.disabled = currentGame === 0;
+    nextGameButton.disabled = currentGame === gameList.length - 1;
+
+}
+
+nextGameButton.addEventListener("click", function () {
+
+    if (currentGame < gameList.length - 1) {
+        currentGame++;
+    }
+
+    updateGame();
+    updateGameNavigationButtons();
+
+});
+
+previousGameButton.addEventListener("click", function () {
+
+    if (currentGame > 0) {
+        currentGame--;
+    }
+
+    updateGame();
+    updateGameNavigationButtons();
+
+});
+
+checkGameButton.addEventListener("click", function () {
+
+    const userAnswer = gameAnswer.value.trim().toLowerCase();
+
+    if (userAnswer === "") {
+
+        gameResult.textContent = "Please write an answer.";
+        gameResult.className = "no-answer";
+
+        return;
+
+    }
+
+    if (userAnswer === gameList[currentGame].answer) {
+
+        gameResult.textContent = "Correct!";
+        gameResult.className = "correct";
+
+    } else {
+
+        gameResult.textContent = "Incorrect!";
+        gameResult.className = "incorrect";
+
+    }
+
+});
 
 function updateWriting() {
 

@@ -30,7 +30,7 @@
                 <p>Practice vocabulary with interactive flashcards.</p>
             </article>
 
-            <article class="menu-card">
+            <article class="menu-card" id="mini-games">
                 <h2>Mini Games</h2>
                 <p>Improve your English through fun mini games.</p>
             </article>
@@ -183,6 +183,33 @@
                     <button id="next-writing-button" class="button button-secondary">
                         Next
                     </button>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="mini-games-section" id="mini-games-section">
+
+            <h2>Mini Games</h2>
+
+            <div class="study-card mini-game-card">
+
+                <span class="game-progress study-progress"></span>
+
+                <h3 id="game-title"></h3>
+
+                <p id="scrambled-word"></p>
+
+                <input type="text" id="game-answer" placeholder="Write your answer">
+
+                <button id="check-game-button" class="button button-primary">Check</button>
+
+                <p id="game-result"></p>
+
+                <div class="game-navigation">
+                    <button id="previous-game-button" class="button button-secondary">Previous</button>
+                    <button id="next-game-button" class="button button-secondary">Next</button>
                 </div>
 
             </div>
