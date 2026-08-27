@@ -53,6 +53,38 @@ const listeningSection = document.querySelector("#listening-section");
 const previousReadingButton = document.querySelector("#previous-reading-button");
 const nextReadingButton = document.querySelector("#next-reading-button");
 
+miniGames.addEventListener("click", function () {
+
+    miniGamesSection.style.display = "block";
+
+    const targetPosition = miniGamesSection.offsetTop;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+
+    const duration = 1000;
+    let startTime = null;
+
+    function animation(currentTime) {
+
+        if (startTime === null) {
+            startTime = currentTime;
+        }
+
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+
+        window.scrollTo(0, startPosition + distance * progress);
+
+        if (progress < 1) {
+            requestAnimationFrame(animation);
+        }
+
+    }
+
+    requestAnimationFrame(animation);
+
+});
+
 function updateReadingNavigationButtons() {
 
     previousReadingButton.disabled = currentReading === 0;

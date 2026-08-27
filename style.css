@@ -436,3 +436,86 @@ header p {
 
     margin-top: 30px;
 }
+
+.mini-games-section {
+    display: none;
+    min-height: 100vh;
+    padding: 80px 20px;
+
+    text-align: center;
+}
+
+.mini-game-card {
+    max-width: 600px;
+}
+
+.game-progress {
+    margin-bottom: 15px;
+}
+
+.mini-game-card h3 {
+    margin: 0 0 15px;
+    font-size: 26px;
+}
+
+#scrambled-word {
+    margin: 0;
+
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.mini-game-card input {
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px 18px;
+
+    background-color: var(--background);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.5;
+
+    transition: 0.2s ease;
+}
+
+.mini-game-card input::placeholder {
+    color: var(--text-secondary);
+}
+
+.mini-game-card input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+#check-game-button {
+    margin-top: 25px;
+}
+
+#game-result {
+    margin: 20px 0 0;
+    font-weight: 500;
+    text-align: center;
+}
+
+#game-result.correct {
+    color: var(--primary);
+}
+
+#game-result.incorrect {
+    color: var(--error);
+}
+
+.game-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
+    margin-top: 30px;
+}
