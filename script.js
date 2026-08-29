@@ -117,6 +117,7 @@ previousReadingButton.addEventListener("click", function () {
 checkButton.addEventListener("click", function () {
 
     const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+    const exerciseId = `reading-${currentReading}`;
 
     if (selectedAnswer === null) {
 
@@ -132,10 +133,14 @@ checkButton.addEventListener("click", function () {
         answerResult.textContent = "Correct!";
         answerResult.className = "correct";
 
+        registerAnswer(exerciseId, true);
+
     } else {
 
         answerResult.textContent = "Incorrect!";
         answerResult.className = "incorrect";
+
+        registerAnswer(exerciseId, false);
 
     }
 
@@ -144,6 +149,7 @@ checkButton.addEventListener("click", function () {
 checkListeningButton.addEventListener("click", function () {
 
     const selectedAnswer = document.querySelector('input[name="listening-answer"]:checked');
+    const exerciseId = `listening-${currentListening}`;
 
     if (selectedAnswer === null) {
 
@@ -159,10 +165,14 @@ checkListeningButton.addEventListener("click", function () {
         listeningAnswerResult.textContent = "Correct!";
         listeningAnswerResult.className = "correct";
 
+        registerAnswer(exerciseId, true);
+
     } else {
 
         listeningAnswerResult.textContent = "Incorrect!";
         listeningAnswerResult.className = "incorrect";
+
+        registerAnswer(exerciseId, false);
 
     }
 
@@ -267,6 +277,7 @@ writing.addEventListener("click", function () {
 checkWritingButton.addEventListener("click", function () {
 
     const userAnswer = writingAnswer.value.trim().toLowerCase();
+    const exerciseId = `writing-${currentWriting}`;
 
     if (userAnswer === "") {
 
@@ -288,10 +299,14 @@ checkWritingButton.addEventListener("click", function () {
         writingResult.textContent = "Good job!";
         writingResult.className = "correct";
 
+        registerAnswer(exerciseId, true);
+
     } else {
 
         writingResult.textContent = "Try again.";
         writingResult.className = "incorrect";
+
+        registerAnswer(exerciseId, false);
 
     }
 
@@ -306,6 +321,39 @@ const translation = document.querySelector("#translation");
 const cardProgress = document.querySelector(".card-progress");
 
 let isRevealed = false;
+
+let progressData = {
+    completed: 0,
+    correct: 0,
+    incorrect: 0,
+    completedExercises: []
+};
+
+const savedProgress = localStorage.getItem("progressData");
+
+if (savedProgress !== null) {
+    progressData = JSON.parse(savedProgress);
+}
+
+function registerAnswer(exerciseId, isCorrect) {
+
+    if (progressData.completedExercises.includes(exerciseId)) {
+        return;
+    }
+
+    progressData.completedExercises.push(exerciseId);
+
+    progressData.completed++;
+
+    if (isCorrect) {
+        progressData.correct++;
+    } else {
+        progressData.incorrect++;
+    }
+
+    localStorage.setItem("progressData", JSON.stringify(progressData));
+
+}
 
 let flashcardList = [
     {
@@ -596,6 +644,7 @@ previousGameButton.addEventListener("click", function () {
 checkGameButton.addEventListener("click", function () {
 
     const userAnswer = gameAnswer.value.trim().toLowerCase();
+    const exerciseId = `mini-game-${currentGame}`;
 
     if (userAnswer === "") {
 
@@ -611,9 +660,13 @@ checkGameButton.addEventListener("click", function () {
         gameResult.textContent = "Correct!";
         gameResult.className = "correct";
 
+        registerAnswer(exerciseId, true);
+
     } else {
 
         gameResult.textContent = "Incorrect!";
+        gameResult.className = "incorrect";
+
         gameResult.className = "incorrect";
 
     }
