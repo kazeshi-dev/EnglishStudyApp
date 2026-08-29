@@ -1,5 +1,13 @@
 console.log("English Study App loaded!");
 
+const progressSection = document.querySelector("#progress-section");
+const progress = document.querySelector("#progress");
+
+const completedCount = document.querySelector("#completed-count");
+const correctCount = document.querySelector("#correct-count");
+const incorrectCount = document.querySelector("#incorrect-count");
+const accuracy = document.querySelector("#accuracy");
+
 const miniGames = document.querySelector("#mini-games");
 const miniGamesSection = document.querySelector("#mini-games-section");
 
@@ -312,6 +320,43 @@ checkWritingButton.addEventListener("click", function () {
 
 });
 
+progress.addEventListener("click", function () {
+
+    progressSection.style.display = "block";
+
+    updateProgress();
+
+    const targetPosition = progressSection.offsetTop;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+
+    const duration = 1000;
+    let startTime = null;
+
+    function animation(currentTime) {
+
+        if (startTime === null) {
+            startTime = currentTime;
+        }
+
+        const elapsedTime = currentTime - startTime;
+        const progressValue = Math.min(elapsedTime / duration, 1);
+
+        window.scrollTo(
+            0,
+            startPosition + distance * progressValue
+        );
+
+        if (progressValue < 1) {
+            requestAnimationFrame(animation);
+        }
+
+    }
+
+    requestAnimationFrame(animation);
+
+});
+
 const revealButton = document.querySelector("#reveal-button");
 const nextButton = document.querySelector("#next-button");
 const previousButton = document.querySelector("#previous-button");
@@ -352,6 +397,20 @@ function registerAnswer(exerciseId, isCorrect) {
     }
 
     localStorage.setItem("progressData", JSON.stringify(progressData));
+
+}
+
+function updateProgress() {
+
+    completedCount.textContent = progressData.completed;
+    correctCount.textContent = progressData.correct;
+    incorrectCount.textContent = progressData.incorrect;
+
+    const accuracyValue = progressData.completed === 0
+        ? 0
+        : (progressData.correct / progressData.completed) * 100;
+
+    accuracy.textContent = `${accuracyValue.toFixed(1)}%`;
 
 }
 

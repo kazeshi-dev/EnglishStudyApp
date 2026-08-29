@@ -49,7 +49,7 @@
                 <p>Practice writing through interactive exercises.</p>
             </article>
 
-            <article class="menu-card">
+            <article class="menu-card" id="progress">
                 <h2>Progress</h2>
                 <p>Track your learning progress and daily streak.</p>
             </article>
@@ -210,6 +210,36 @@
                 <div class="game-navigation">
                     <button id="previous-game-button" class="button button-secondary">Previous</button>
                     <button id="next-game-button" class="button button-secondary">Next</button>
+                </div>
+
+            </div>
+
+        </section>
+
+       <section class="progress-section" id="progress-section">
+
+            <h2>Progress</h2>
+
+            <div class="progress-card study-card">
+
+                <div class="progress-stat">
+                    <span>Exercises Completed</span>
+                    <strong id="completed-count"></strong>
+                </div>
+
+                <div class="progress-stat">
+                    <span>Correct Answers</span>
+                    <strong id="correct-count"></strong>
+                </div>
+
+                <div class="progress-stat">
+                    <span>Incorrect Answers</span>
+                    <strong id="incorrect-count"></strong>
+                </div>
+
+                <div class="progress-stat">
+                    <span>Accuracy</span>
+                    <strong id="accuracy"></strong>
                 </div>
 
             </div>
