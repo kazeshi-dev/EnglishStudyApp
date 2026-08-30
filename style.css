@@ -519,3 +519,41 @@ header p {
 
     margin-top: 30px;
 }
+
+.progress-section {
+    display: none;
+    min-height: 100vh;
+    padding: 80px 20px;
+
+    text-align: center;
+}
+
+.progress-card {
+    max-width: 600px;
+}
+
+.progress-stat {
+    padding: 20px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.progress-stat:last-child {
+    border-bottom: none;
+}
+
+.progress-stat span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.progress-stat strong {
+    display: block;
+
+    color: var(--text);
+    font-size: 32px;
+}
