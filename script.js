@@ -61,272 +61,17 @@ const listeningSection = document.querySelector("#listening-section");
 const previousReadingButton = document.querySelector("#previous-reading-button");
 const nextReadingButton = document.querySelector("#next-reading-button");
 
-miniGames.addEventListener("click", function () {
+const revealButton = document.querySelector("#reveal-button");
+const nextButton = document.querySelector("#next-button");
+const previousButton = document.querySelector("#previous-button");
 
-    miniGamesSection.style.display = "block";
+const cardWord = document.querySelector("#card-word");
+const translation = document.querySelector("#translation");
+const cardProgress = document.querySelector(".card-progress");
 
-    const targetPosition = miniGamesSection.offsetTop;
-    const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
+function scrollToSection(section) {
 
-    const duration = 1000;
-    let startTime = null;
-
-    function animation(currentTime) {
-
-        if (startTime === null) {
-            startTime = currentTime;
-        }
-
-        const elapsedTime = currentTime - startTime;
-        const progress = Math.min(elapsedTime / duration, 1);
-
-        window.scrollTo(0, startPosition + distance * progress);
-
-        if (progress < 1) {
-            requestAnimationFrame(animation);
-        }
-
-    }
-
-    requestAnimationFrame(animation);
-
-});
-
-function updateReadingNavigationButtons() {
-
-    previousReadingButton.disabled = currentReading === 0;
-    nextReadingButton.disabled = currentReading === readingList.length - 1;
-
-}
-
-nextReadingButton.addEventListener("click", function () {
-
-    if (currentReading < readingList.length - 1) {
-        currentReading++;
-    }
-
-    updateReading();
-    updateReadingNavigationButtons();
-
-});
-
-previousReadingButton.addEventListener("click", function () {
-
-    if (currentReading > 0) {
-        currentReading--;
-    }
-
-    updateReading();
-    updateReadingNavigationButtons();
-
-});
-
-checkButton.addEventListener("click", function () {
-
-    const selectedAnswer = document.querySelector('input[name="answer"]:checked');
-    const exerciseId = `reading-${currentReading}`;
-
-    if (selectedAnswer === null) {
-
-        answerResult.textContent = "Please select an answer.";
-        answerResult.className = "no-answer";
-
-        return;
-
-    }
-
-    if (Number(selectedAnswer.value) === readingList[currentReading].correctAnswer) {
-
-        answerResult.textContent = "Correct!";
-        answerResult.className = "correct";
-
-        registerAnswer(exerciseId, true);
-
-    } else {
-
-        answerResult.textContent = "Incorrect!";
-        answerResult.className = "incorrect";
-
-        registerAnswer(exerciseId, false);
-
-    }
-
-});
-
-checkListeningButton.addEventListener("click", function () {
-
-    const selectedAnswer = document.querySelector('input[name="listening-answer"]:checked');
-    const exerciseId = `listening-${currentListening}`;
-
-    if (selectedAnswer === null) {
-
-        listeningAnswerResult.textContent = "Please select an answer.";
-        listeningAnswerResult.className = "no-answer";
-
-        return;
-
-    }
-
-    if (Number(selectedAnswer.value) === listeningList[currentListening].correctAnswer) {
-
-        listeningAnswerResult.textContent = "Correct!";
-        listeningAnswerResult.className = "correct";
-
-        registerAnswer(exerciseId, true);
-
-    } else {
-
-        listeningAnswerResult.textContent = "Incorrect!";
-        listeningAnswerResult.className = "incorrect";
-
-        registerAnswer(exerciseId, false);
-
-    }
-
-});
-
-listening.addEventListener("click", function () {
-
-    listeningSection.style.display = "block";
-
-    const targetPosition = listeningSection.offsetTop;
-    const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
-
-    const duration = 1000;
-    let startTime = null;
-
-    function animation(currentTime) {
-
-        if (startTime === null) {
-            startTime = currentTime;
-        }
-
-        const elapsedTime = currentTime - startTime;
-        const progress = Math.min(elapsedTime / duration, 1);
-
-        window.scrollTo(0, startPosition + distance * progress);
-
-        if (progress < 1) {
-            requestAnimationFrame(animation);
-        }
-
-    }
-
-    requestAnimationFrame(animation);
-
-});
-
-reading.addEventListener("click", function () {
-
-    readingSection.style.display = "block";
-
-    const targetPosition = readingSection.offsetTop;
-    const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
-
-    const duration = 1000;
-    let startTime = null;
-
-    function animation(currentTime) {
-
-        if (startTime === null) {
-            startTime = currentTime;
-        }
-
-        const elapsedTime = currentTime - startTime;
-        const progress = Math.min(elapsedTime / duration, 1);
-
-        window.scrollTo(0, startPosition + distance * progress);
-
-        if (progress < 1) {
-            requestAnimationFrame(animation);
-        }
-
-    }
-
-    requestAnimationFrame(animation);
-
-});
-
-writing.addEventListener("click", function () {
-
-    writingSection.style.display = "block";
-
-    const targetPosition = writingSection.offsetTop;
-    const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
-
-    const duration = 1000;
-    let startTime = null;
-
-    function animation(currentTime) {
-
-            if (startTime === null) {
-                startTime = currentTime;
-            }
-
-            const elapsedTime = currentTime - startTime;
-            const progress = Math.min(elapsedTime / duration, 1);
-
-            window.scrollTo(0, startPosition + distance * progress);
-
-            if (progress < 1) {
-                requestAnimationFrame(animation);
-            }
-
-        }
-
-        requestAnimationFrame(animation);
-
-    });
-
-checkWritingButton.addEventListener("click", function () {
-
-    const userAnswer = writingAnswer.value.trim().toLowerCase();
-    const exerciseId = `writing-${currentWriting}`;
-
-    if (userAnswer === "") {
-
-        writingResult.textContent = "Please write an answer.";
-        writingResult.className = "no-answer";
-
-        return;
-
-    }
-
-    const keywords = writingList[currentWriting].keywords;
-
-    const hasKeyword = keywords.some(function (keyword) {
-        return userAnswer.includes(keyword.toLowerCase());
-    });
-
-    if (hasKeyword) {
-
-        writingResult.textContent = "Good job!";
-        writingResult.className = "correct";
-
-        registerAnswer(exerciseId, true);
-
-    } else {
-
-        writingResult.textContent = "Try again.";
-        writingResult.className = "incorrect";
-
-        registerAnswer(exerciseId, false);
-
-    }
-
-});
-
-progress.addEventListener("click", function () {
-
-    progressSection.style.display = "block";
-
-    updateProgress();
-
-    const targetPosition = progressSection.offsetTop;
+    const targetPosition = section.offsetTop;
     const startPosition = window.scrollY;
     const distance = targetPosition - startPosition;
 
@@ -354,63 +99,6 @@ progress.addEventListener("click", function () {
     }
 
     requestAnimationFrame(animation);
-
-});
-
-const revealButton = document.querySelector("#reveal-button");
-const nextButton = document.querySelector("#next-button");
-const previousButton = document.querySelector("#previous-button");
-
-const cardWord = document.querySelector("#card-word");
-const translation = document.querySelector("#translation");
-const cardProgress = document.querySelector(".card-progress");
-
-let isRevealed = false;
-
-let progressData = {
-    completed: 0,
-    correct: 0,
-    incorrect: 0,
-    completedExercises: []
-};
-
-const savedProgress = localStorage.getItem("progressData");
-
-if (savedProgress !== null) {
-    progressData = JSON.parse(savedProgress);
-}
-
-function registerAnswer(exerciseId, isCorrect) {
-
-    if (progressData.completedExercises.includes(exerciseId)) {
-        return;
-    }
-
-    progressData.completedExercises.push(exerciseId);
-
-    progressData.completed++;
-
-    if (isCorrect) {
-        progressData.correct++;
-    } else {
-        progressData.incorrect++;
-    }
-
-    localStorage.setItem("progressData", JSON.stringify(progressData));
-
-}
-
-function updateProgress() {
-
-    completedCount.textContent = progressData.completed;
-    correctCount.textContent = progressData.correct;
-    incorrectCount.textContent = progressData.incorrect;
-
-    const accuracyValue = progressData.completed === 0
-        ? 0
-        : (progressData.correct / progressData.completed) * 100;
-
-    accuracy.textContent = `${accuracyValue.toFixed(1)}%`;
 
 }
 
@@ -560,8 +248,6 @@ let listeningList = [
 
 ];
 
-let currentListening = 0;
-
 let writingList = [
 
     {
@@ -616,8 +302,6 @@ let writingList = [
 
 ];
 
-let currentWriting = 0;
-
 let gameList = [
 
     {
@@ -652,241 +336,58 @@ let gameList = [
 
 ];
 
+let currentListening = 0;
+let currentWriting = 0;
 let currentGame = 0;
-
-function updateGame() {
-
-    gameProgress.textContent = `Game ${currentGame + 1} / ${gameList.length}`;
-
-    gameTitle.textContent = gameList[currentGame].title;
-
-    scrambledWord.textContent = gameList[currentGame].scrambled;
-
-    gameAnswer.value = "";
-
-    gameResult.textContent = "";
-    gameResult.className = "";
-
-}
-updateGame();
-updateGameNavigationButtons();
-
-function updateGameNavigationButtons() {
-
-    previousGameButton.disabled = currentGame === 0;
-    nextGameButton.disabled = currentGame === gameList.length - 1;
-
-}
-
-nextGameButton.addEventListener("click", function () {
-
-    if (currentGame < gameList.length - 1) {
-        currentGame++;
-    }
-
-    updateGame();
-    updateGameNavigationButtons();
-
-});
-
-previousGameButton.addEventListener("click", function () {
-
-    if (currentGame > 0) {
-        currentGame--;
-    }
-
-    updateGame();
-    updateGameNavigationButtons();
-
-});
-
-checkGameButton.addEventListener("click", function () {
-
-    const userAnswer = gameAnswer.value.trim().toLowerCase();
-    const exerciseId = `mini-game-${currentGame}`;
-
-    if (userAnswer === "") {
-
-        gameResult.textContent = "Please write an answer.";
-        gameResult.className = "no-answer";
-
-        return;
-
-    }
-
-    if (userAnswer === gameList[currentGame].answer) {
-
-        gameResult.textContent = "Correct!";
-        gameResult.className = "correct";
-
-        registerAnswer(exerciseId, true);
-
-    } else {
-
-        gameResult.textContent = "Incorrect!";
-        gameResult.className = "incorrect";
-
-        gameResult.className = "incorrect";
-
-    }
-
-});
-
-function updateWriting() {
-
-    writingTitle.textContent = writingList[currentWriting].title;
-
-    writingPrompt.textContent = writingList[currentWriting].prompt;
-
-    writingProgress.textContent = `Writing ${currentWriting + 1} / ${writingList.length}`;
-
-    writingAnswer.value = "";
-
-    writingResult.textContent = "";
-    writingResult.className = "";
-
-}
-
-updateWriting();
-updateWritingNavigationButtons();
-
-function updateWritingNavigationButtons() {
-
-    previousWritingButton.disabled = currentWriting === 0;
-    nextWritingButton.disabled = currentWriting === writingList.length - 1;
-
-}
-
-nextWritingButton.addEventListener("click", function () {
-
-    if (currentWriting < writingList.length - 1) {
-        currentWriting++;
-    }
-
-    updateWriting();
-    updateWritingNavigationButtons();
-
-});
-
-previousWritingButton.addEventListener("click", function () {
-
-    if (currentWriting > 0) {
-        currentWriting--;
-    }
-
-    updateWriting();
-    updateWritingNavigationButtons();
-
-});
-
-function updateListeningNavigationButtons() {
-
-    previousListeningButton.disabled = currentListening === 0;
-    nextListeningButton.disabled = currentListening === listeningList.length - 1;
-
-}
-
-function updateListening() {
-
-    listeningTitle.textContent = listeningList[currentListening].title;
-
-    listeningQuestionText.textContent = listeningList[currentListening].question;
-
-    listeningProgress.textContent = `Listening ${currentListening + 1} / ${listeningList.length}`;
-
-    listeningAnswerOptions.innerHTML = "";
-
-    listeningAnswerResult.textContent = "";
-    listeningAnswerResult.className = "";
-
-    listeningList[currentListening].answers.forEach(function (answer, index) {
-
-        const label = document.createElement("label");
-        label.classList.add("answer-option");
-
-        const input = document.createElement("input");
-        input.type = "radio";
-        input.name = "listening-answer";
-        input.value = index;
-
-        const span = document.createElement("span");
-        span.textContent = answer;
-
-        label.appendChild(input);
-        label.appendChild(span);
-
-        listeningAnswerOptions.appendChild(label);
-
-    });
-
-}
-updateListening();
-updateListeningNavigationButtons();
-
-nextListeningButton.addEventListener("click", function () {
-
-    if (currentListening < listeningList.length - 1) {
-        currentListening++;
-    }
-
-    updateListening();
-    updateListeningNavigationButtons();
-
-});
-
-previousListeningButton.addEventListener("click", function () {
-
-    if (currentListening > 0) {
-        currentListening--;
-    }
-
-    updateListening();
-    updateListeningNavigationButtons();
-
-});
-
 let currentReading = 0;
+let currentCard = 0;
+let progressData = {
+    completed: 0,
+    correct: 0,
+    incorrect: 0,
+    completedExercises: []
+};
 
-updateReadingNavigationButtons();
+const savedProgress = localStorage.getItem("progressData");
 
-function updateReading() {
+if (savedProgress !== null) {
+    progressData = JSON.parse(savedProgress);
+}
 
-    readingTitle.textContent = readingList[currentReading].title;
-    readingText.textContent = readingList[currentReading].text;
-    questionText.textContent = readingList[currentReading].question;
+function registerAnswer(exerciseId, isCorrect) {
 
-    readingProgress.textContent = `Reading ${currentReading + 1} / ${readingList.length}`;
+    if (progressData.completedExercises.includes(exerciseId)) {
+        return;
+    }
 
-    answerOptions.innerHTML = "";
+    progressData.completedExercises.push(exerciseId);
 
-    answerResult.textContent = "";
-    answerResult.className = "";
+    progressData.completed++;
 
-    readingList[currentReading].answers.forEach(function (answer, index) {
+    if (isCorrect) {
+        progressData.correct++;
+    } else {
+        progressData.incorrect++;
+    }
 
-        const label = document.createElement("label");
-        label.classList.add("answer-option");
-
-        const input = document.createElement("input");
-        input.type = "radio";
-        input.name = "answer";
-        input.value = index;
-
-        const span = document.createElement("span");
-        span.textContent = answer;
-
-        label.appendChild(input);
-        label.appendChild(span);
-
-        answerOptions.appendChild(label);
-
-    });
+    localStorage.setItem("progressData", JSON.stringify(progressData));
 
 }
 
-updateReading();
+function updateProgress() {
 
-let currentCard = 0;
+    completedCount.textContent = progressData.completed;
+    correctCount.textContent = progressData.correct;
+    incorrectCount.textContent = progressData.incorrect;
+
+    const accuracyValue = progressData.completed === 0
+        ? 0
+        : (progressData.correct / progressData.completed) * 100;
+
+    accuracy.textContent = `${accuracyValue.toFixed(1)}%`;
+
+}
+
 
 function updateNavigationButtons() {
 
@@ -957,30 +458,413 @@ flashcards.addEventListener("click", function () {
 
     flashcardsSection.style.display = "block";
 
-    const targetPosition = flashcardsSection.offsetTop;
-    const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
+    scrollToSection(flashcardsSection);
 
-    const duration = 1000;
-    let startTime = null;
+});
 
-    function animation(currentTime) {
+function updateReadingNavigationButtons() {
 
-        if (startTime === null) {
-            startTime = currentTime;
-        }
+    previousReadingButton.disabled = currentReading === 0;
+    nextReadingButton.disabled = currentReading === readingList.length - 1;
 
-        const elapsedTime = currentTime - startTime;
-        const progress = Math.min(elapsedTime / duration, 1);
+}
 
-        window.scrollTo(0, startPosition + distance * progress);
+function updateReading() {
 
-        if (progress < 1) {
-            requestAnimationFrame(animation);
-        }
+    readingTitle.textContent = readingList[currentReading].title;
+    readingText.textContent = readingList[currentReading].text;
+    questionText.textContent = readingList[currentReading].question;
+
+    readingProgress.textContent = `Reading ${currentReading + 1} / ${readingList.length}`;
+
+    answerOptions.innerHTML = "";
+
+    answerResult.textContent = "";
+    answerResult.className = "";
+
+    readingList[currentReading].answers.forEach(function (answer, index) {
+
+        const label = document.createElement("label");
+        label.classList.add("answer-option");
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "answer";
+        input.value = index;
+
+        const span = document.createElement("span");
+        span.textContent = answer;
+
+        label.appendChild(input);
+        label.appendChild(span);
+
+        answerOptions.appendChild(label);
+
+    });
+
+}
+
+updateReading();
+updateReadingNavigationButtons();
+
+nextReadingButton.addEventListener("click", function () {
+
+    if (currentReading < readingList.length - 1) {
+        currentReading++;
+    }
+
+    updateReading();
+    updateReadingNavigationButtons();
+
+});
+
+previousReadingButton.addEventListener("click", function () {
+
+    if (currentReading > 0) {
+        currentReading--;
+    }
+
+    updateReading();
+    updateReadingNavigationButtons();
+
+});
+
+checkButton.addEventListener("click", function () {
+
+    const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+    const exerciseId = `reading-${currentReading}`;
+
+    if (selectedAnswer === null) {
+
+        answerResult.textContent = "Please select an answer.";
+        answerResult.className = "no-answer";
+
+        return;
 
     }
 
-    requestAnimationFrame(animation);
+    if (Number(selectedAnswer.value) === readingList[currentReading].correctAnswer) {
+
+        answerResult.textContent = "Correct!";
+        answerResult.className = "correct";
+
+        registerAnswer(exerciseId, true);
+
+    } else {
+
+        answerResult.textContent = "Incorrect!";
+        answerResult.className = "incorrect";
+
+        registerAnswer(exerciseId, false);
+
+    }
+
+});
+
+reading.addEventListener("click", function () {
+
+    readingSection.style.display = "block";
+
+    scrollToSection(readingSection);
+
+});
+
+function updateListeningNavigationButtons() {
+
+    previousListeningButton.disabled = currentListening === 0;
+    nextListeningButton.disabled = currentListening === listeningList.length - 1;
+
+}
+
+function updateListening() {
+
+    listeningTitle.textContent = listeningList[currentListening].title;
+
+    listeningQuestionText.textContent = listeningList[currentListening].question;
+
+    listeningProgress.textContent = `Listening ${currentListening + 1} / ${listeningList.length}`;
+
+    listeningAnswerOptions.innerHTML = "";
+
+    listeningAnswerResult.textContent = "";
+    listeningAnswerResult.className = "";
+
+    listeningList[currentListening].answers.forEach(function (answer, index) {
+
+        const label = document.createElement("label");
+        label.classList.add("answer-option");
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "listening-answer";
+        input.value = index;
+
+        const span = document.createElement("span");
+        span.textContent = answer;
+
+        label.appendChild(input);
+        label.appendChild(span);
+
+        listeningAnswerOptions.appendChild(label);
+
+    });
+
+}
+
+updateListening();
+updateListeningNavigationButtons();
+
+nextListeningButton.addEventListener("click", function () {
+
+    if (currentListening < listeningList.length - 1) {
+        currentListening++;
+    }
+
+    updateListening();
+    updateListeningNavigationButtons();
+
+});
+
+previousListeningButton.addEventListener("click", function () {
+
+    if (currentListening > 0) {
+        currentListening--;
+    }
+
+    updateListening();
+    updateListeningNavigationButtons();
+
+});
+
+checkListeningButton.addEventListener("click", function () {
+
+    const selectedAnswer = document.querySelector('input[name="listening-answer"]:checked');
+    const exerciseId = `listening-${currentListening}`;
+
+    if (selectedAnswer === null) {
+
+        listeningAnswerResult.textContent = "Please select an answer.";
+        listeningAnswerResult.className = "no-answer";
+
+        return;
+
+    }
+
+    if (Number(selectedAnswer.value) === listeningList[currentListening].correctAnswer) {
+
+        listeningAnswerResult.textContent = "Correct!";
+        listeningAnswerResult.className = "correct";
+
+        registerAnswer(exerciseId, true);
+
+    } else {
+
+        listeningAnswerResult.textContent = "Incorrect!";
+        listeningAnswerResult.className = "incorrect";
+
+        registerAnswer(exerciseId, false);
+
+    }
+
+});
+
+listening.addEventListener("click", function () {
+
+    listeningSection.style.display = "block";
+
+    scrollToSection(listeningSection);
+
+});
+
+miniGames.addEventListener("click", function () {
+
+    miniGamesSection.style.display = "block";
+    scrollToSection(miniGamesSection);
+
+});
+
+writing.addEventListener("click", function () {
+
+    writingSection.style.display = "block";
+
+    scrollToSection(writingSection);
+
+});
+
+
+
+checkWritingButton.addEventListener("click", function () {
+
+    const userAnswer = writingAnswer.value.trim().toLowerCase();
+    const exerciseId = `writing-${currentWriting}`;
+
+    if (userAnswer === "") {
+
+        writingResult.textContent = "Please write an answer.";
+        writingResult.className = "no-answer";
+
+        return;
+
+    }
+
+    const keywords = writingList[currentWriting].keywords;
+
+    const hasKeyword = keywords.some(function (keyword) {
+        return userAnswer.includes(keyword.toLowerCase());
+    });
+
+    if (hasKeyword) {
+
+        writingResult.textContent = "Good job!";
+        writingResult.className = "correct";
+
+        registerAnswer(exerciseId, true);
+
+    } else {
+
+        writingResult.textContent = "Try again.";
+        writingResult.className = "incorrect";
+
+        registerAnswer(exerciseId, false);
+
+    }
+
+});
+
+progress.addEventListener("click", function () {
+
+    progressSection.style.display = "block";
+
+    updateProgress();
+
+    scrollToSection(progressSection);
+
+});
+
+let isRevealed = false;
+
+function updateGame() {
+
+    gameProgress.textContent = `Game ${currentGame + 1} / ${gameList.length}`;
+
+    gameTitle.textContent = gameList[currentGame].title;
+
+    scrambledWord.textContent = gameList[currentGame].scrambled;
+
+    gameAnswer.value = "";
+
+    gameResult.textContent = "";
+    gameResult.className = "";
+
+}
+
+updateGame();
+updateGameNavigationButtons();
+
+function updateGameNavigationButtons() {
+
+    previousGameButton.disabled = currentGame === 0;
+    nextGameButton.disabled = currentGame === gameList.length - 1;
+
+}
+
+nextGameButton.addEventListener("click", function () {
+
+    if (currentGame < gameList.length - 1) {
+        currentGame++;
+    }
+
+    updateGame();
+    updateGameNavigationButtons();
+
+});
+
+previousGameButton.addEventListener("click", function () {
+
+    if (currentGame > 0) {
+        currentGame--;
+    }
+
+    updateGame();
+    updateGameNavigationButtons();
+
+});
+
+checkGameButton.addEventListener("click", function () {
+
+    const userAnswer = gameAnswer.value.trim().toLowerCase();
+    const exerciseId = `mini-game-${currentGame}`;
+
+    if (userAnswer === "") {
+
+        gameResult.textContent = "Please write an answer.";
+        gameResult.className = "no-answer";
+
+        return;
+
+    }
+
+    if (userAnswer === gameList[currentGame].answer) {
+
+        gameResult.textContent = "Correct!";
+        gameResult.className = "correct";
+
+        registerAnswer(exerciseId, true);
+
+    } else {
+
+        gameResult.textContent = "Incorrect!";
+        gameResult.className = "incorrect";
+
+        registerAnswer(exerciseId, false);
+
+    }
+
+});
+
+function updateWriting() {
+
+    writingTitle.textContent = writingList[currentWriting].title;
+
+    writingPrompt.textContent = writingList[currentWriting].prompt;
+
+    writingProgress.textContent = `Writing ${currentWriting + 1} / ${writingList.length}`;
+
+    writingAnswer.value = "";
+
+    writingResult.textContent = "";
+    writingResult.className = "";
+
+}
+
+updateWriting();
+updateWritingNavigationButtons();
+
+function updateWritingNavigationButtons() {
+
+    previousWritingButton.disabled = currentWriting === 0;
+    nextWritingButton.disabled = currentWriting === writingList.length - 1;
+
+}
+
+nextWritingButton.addEventListener("click", function () {
+
+    if (currentWriting < writingList.length - 1) {
+        currentWriting++;
+    }
+
+    updateWriting();
+    updateWritingNavigationButtons();
+
+});
+
+previousWritingButton.addEventListener("click", function () {
+
+    if (currentWriting > 0) {
+        currentWriting--;
+    }
+
+    updateWriting();
+    updateWritingNavigationButtons();
 
 });
