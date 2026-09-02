@@ -69,6 +69,8 @@ const cardWord = document.querySelector("#card-word");
 const translation = document.querySelector("#translation");
 const cardProgress = document.querySelector(".card-progress");
 
+const shuffleButton = document.getElementById("shuffle-button");
+
 function scrollToSection(section) {
 
     const targetPosition = section.offsetTop;
@@ -341,6 +343,7 @@ let currentWriting = 0;
 let currentGame = 0;
 let currentReading = 0;
 let currentCard = 0;
+let flashcardOrder = flashcardList.map((_, index) => index);
 let progressData = {
     completed: 0,
     correct: 0,
@@ -400,14 +403,14 @@ updateNavigationButtons();
 
 cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
 
-cardWord.textContent = flashcardList[currentCard].word;
+cardWord.textContent = flashcardList[flashcardOrder[currentCard]].word;
 
 
 revealButton.addEventListener("click", function () {
 
     if (isRevealed === false) {
 
-        translation.textContent = flashcardList[currentCard].translation;
+        translation.textContent = flashcardList[flashcardOrder[currentCard]].translation;
         isRevealed = true;
         revealButton.textContent = "Hide";
 
@@ -427,7 +430,7 @@ nextButton.addEventListener("click", function () {
         currentCard++;
     }
 
-    cardWord.textContent = flashcardList[currentCard].word;
+    cardWord.textContent = flashcardList[flashcardOrder[currentCard]].word;
     cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
 
     translation.textContent = "";
@@ -444,7 +447,7 @@ previousButton.addEventListener("click", function () {
         currentCard--;
     }
 
-    cardWord.textContent = flashcardList[currentCard].word;
+    cardWord.textContent = flashcardList[flashcardOrder[currentCard]].word;
     cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
     translation.textContent = "";
     isRevealed = false;
@@ -461,6 +464,23 @@ flashcards.addEventListener("click", function () {
     scrollToSection(flashcardsSection);
 
 });
+
+shuffleButton.addEventListener("click", () => {
+    shuffleFlashcards();
+});
+
+function shuffleFlashcards() {
+    flashcardOrder = [...flashcardOrder].sort(() => Math.random() - 0.5);
+    currentCard = 0;
+
+    cardWord.textContent = flashcardList[flashcardOrder[currentCard]].word;
+    cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
+
+    translation.textContent = "";
+    isRevealed = false;
+
+    updateNavigationButtons();
+}
 
 function updateReadingNavigationButtons() {
 
