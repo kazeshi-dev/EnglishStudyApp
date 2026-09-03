@@ -149,6 +149,48 @@ header p {
     text-align: center;
 }
 
+.category-filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 25px;
+}
+
+.category-filter label {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.category-filter select {
+    width: 220px;
+    padding: 10px 14px;
+
+    background-color: var(--surface);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.category-filter select:hover {
+    border-color: var(--primary);
+}
+
+.category-filter select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
 .study-card {
     margin: 40px auto 0;
     padding: 35px;
@@ -216,6 +258,9 @@ header p {
     display: flex;
     justify-content: center;
     gap: 15px;
+}
+#shuffle-button {
+    margin-top: 20px;
 }
 
 .reading-section {

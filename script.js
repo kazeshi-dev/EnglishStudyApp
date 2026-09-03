@@ -70,6 +70,7 @@ const translation = document.querySelector("#translation");
 const cardProgress = document.querySelector(".card-progress");
 
 const shuffleButton = document.getElementById("shuffle-button");
+const categorySelect = document.getElementById("category-select");
 
 function scrollToSection(section) {
 
@@ -107,23 +108,28 @@ function scrollToSection(section) {
 let flashcardList = [
     {
         word: "Apple",
-        translation: "Manzana"
+        translation: "Manzana",
+        category: "Food & Drinks"
     },
     {
         word: "House",
-        translation: "Casa"
+        translation: "Casa",
+        category: "Daily Life"
     },
     {
         word: "Dog",
-        translation: "Perro"
+        translation: "Perro",
+        category: "Animals"
     },
     {
         word: "Water",
-        translation: "Agua"
+        translation: "Agua",
+        category: "Food & Drinks"
     },
     {
         word: "Book",
-        translation: "Libro"
+        translation: "Libro",
+        category: "School & Work"
     }
 ];
 
@@ -350,6 +356,21 @@ let progressData = {
     incorrect: 0,
     completedExercises: []
 };
+let selectedCategory = "All Categories";
+let filteredFlashcards = [...flashcardList];
+
+function filterFlashcards() {
+    if (selectedCategory === "All Categories") {
+        filteredFlashcards = [...flashcardList];
+    } else {
+        filteredFlashcards = flashcardList.filter(
+            flashcard => flashcard.category === selectedCategory
+        );
+    }
+
+    flashcardOrder = filteredFlashcards.map((_, index) => index);
+    currentCard = 0;
+}
 
 const savedProgress = localStorage.getItem("progressData");
 
@@ -395,22 +416,22 @@ function updateProgress() {
 function updateNavigationButtons() {
 
     previousButton.disabled = currentCard === 0;
-    nextButton.disabled = currentCard === flashcardList.length - 1;
+    nextButton.disabled = currentCard === filteredFlashcards.length - 1;
 
 }
 
 updateNavigationButtons();
 
-cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
+cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
 
-cardWord.textContent = flashcardList[flashcardOrder[currentCard]].word;
+cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
 
 
 revealButton.addEventListener("click", function () {
 
     if (isRevealed === false) {
 
-        translation.textContent = flashcardList[flashcardOrder[currentCard]].translation;
+        translation.textContent = filteredFlashcards[flashcardOrder[currentCard]].translation;
         isRevealed = true;
         revealButton.textContent = "Hide";
 
@@ -430,8 +451,8 @@ nextButton.addEventListener("click", function () {
         currentCard++;
     }
 
-    cardWord.textContent = flashcardList[flashcardOrder[currentCard]].word;
-    cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
+    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
 
     translation.textContent = "";
     isRevealed = false;
@@ -447,8 +468,8 @@ previousButton.addEventListener("click", function () {
         currentCard--;
     }
 
-    cardWord.textContent = flashcardList[flashcardOrder[currentCard]].word;
-    cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
+    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
     translation.textContent = "";
     isRevealed = false;
     revealButton.textContent = "Reveal";
@@ -469,12 +490,26 @@ shuffleButton.addEventListener("click", () => {
     shuffleFlashcards();
 });
 
+categorySelect.addEventListener("change", () => {
+    selectedCategory = categorySelect.value;
+    filterFlashcards();
+
+    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
+
+    translation.textContent = "";
+    isRevealed = false;
+
+    updateNavigationButtons();
+});
+
 function shuffleFlashcards() {
-    flashcardOrder = [...flashcardOrder].sort(() => Math.random() - 0.5);
+    flashcardOrder = filteredFlashcards.map((_, index) => index);
+    flashcardOrder.sort(() => Math.random() - 0.5);
     currentCard = 0;
 
-    cardWord.textContent = flashcardList[flashcardOrder[currentCard]].word;
-    cardProgress.textContent = `Card ${currentCard + 1} / ${flashcardList.length}`;
+    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
 
     translation.textContent = "";
     isRevealed = false;
