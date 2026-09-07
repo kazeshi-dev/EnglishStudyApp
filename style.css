@@ -249,7 +249,15 @@ header p {
 }
 
 .card-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
     margin-bottom: 30px;
+}
+
+.review-mode {
+    margin-top: 20px;
     text-align: center;
 }
 

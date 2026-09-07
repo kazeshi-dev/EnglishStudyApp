@@ -69,8 +69,11 @@ const cardWord = document.querySelector("#card-word");
 const translation = document.querySelector("#translation");
 const cardProgress = document.querySelector(".card-progress");
 
+const reviewButton = document.getElementById("review-button");
 const shuffleButton = document.getElementById("shuffle-button");
+const playAudioButton = document.getElementById("play-audio-button");
 const categorySelect = document.getElementById("category-select");
+const difficultButton = document.getElementById("difficult-button");
 
 function scrollToSection(section) {
 
@@ -109,7 +112,8 @@ let flashcardList = [
     {
         word: "Apple",
         translation: "Manzana",
-        category: "Food & Drinks"
+        category: "Food & Drinks",
+        audio: "audio/apple.ogg"
     },
     {
         word: "House",
@@ -132,6 +136,8 @@ let flashcardList = [
         category: "School & Work"
     }
 ];
+
+let difficultFlashcards = [];
 
 let readingList = [
 
@@ -359,6 +365,34 @@ let progressData = {
 let selectedCategory = "All Categories";
 let filteredFlashcards = [...flashcardList];
 
+difficultButton.addEventListener("click", () => {
+    const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
+
+    if (difficultFlashcards.includes(currentFlashcard)) {
+        difficultFlashcards = difficultFlashcards.filter(
+            flashcard => flashcard !== currentFlashcard
+        );
+
+        difficultButton.textContent = "⭐ Difficult";
+    } else {
+        difficultFlashcards.push(currentFlashcard);
+
+        difficultButton.textContent = "⭐ Difficult ✓";
+    }
+});
+
+function updateDifficultButton() {
+    const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
+
+    if (difficultFlashcards.includes(currentFlashcard)) {
+        difficultButton.textContent = "⭐ Difficult ✓";
+    } else {
+        difficultButton.textContent = "⭐ Difficult";
+    }
+}
+
+updateDifficultButton();
+
 function filterFlashcards() {
     if (selectedCategory === "All Categories") {
         filteredFlashcards = [...flashcardList];
@@ -418,9 +452,12 @@ function updateNavigationButtons() {
     previousButton.disabled = currentCard === 0;
     nextButton.disabled = currentCard === filteredFlashcards.length - 1;
 
+    playAudioButton.disabled = !filteredFlashcards[flashcardOrder[currentCard]].audio;
+
 }
 
 updateNavigationButtons();
+updateDifficultButton();
 
 cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
 
@@ -447,7 +484,7 @@ revealButton.addEventListener("click", function () {
 
 nextButton.addEventListener("click", function () {
 
-    if (currentCard < flashcardList.length - 1) {
+    if (currentCard < filteredFlashcards.length - 1) {
         currentCard++;
     }
 
@@ -459,6 +496,7 @@ nextButton.addEventListener("click", function () {
     revealButton.textContent = "Reveal";
 
      updateNavigationButtons();
+     updateDifficultButton();
 
 });
 
@@ -475,6 +513,7 @@ previousButton.addEventListener("click", function () {
     revealButton.textContent = "Reveal";
 
     updateNavigationButtons();
+    updateDifficultButton();
 
 });
 
@@ -490,6 +529,15 @@ shuffleButton.addEventListener("click", () => {
     shuffleFlashcards();
 });
 
+playAudioButton.addEventListener("click", () => {
+    const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
+
+    if (currentFlashcard.audio) {
+        const audio = new Audio(currentFlashcard.audio);
+        audio.play();
+    }
+});
+
 categorySelect.addEventListener("change", () => {
     selectedCategory = categorySelect.value;
     filterFlashcards();
@@ -501,6 +549,26 @@ categorySelect.addEventListener("change", () => {
     isRevealed = false;
 
     updateNavigationButtons();
+    updateDifficultButton();
+});
+
+reviewButton.addEventListener("click", () => {
+    if (difficultFlashcards.length === 0) {
+        return;
+    }
+
+    filteredFlashcards = [...difficultFlashcards];
+    flashcardOrder = filteredFlashcards.map((_, index) => index);
+    currentCard = 0;
+
+    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
+    translation.textContent = "";
+    isRevealed = false;
+    revealButton.textContent = "Reveal";
+
+    updateNavigationButtons();
+    updateDifficultButton();
 });
 
 function shuffleFlashcards() {
@@ -515,6 +583,7 @@ function shuffleFlashcards() {
     isRevealed = false;
 
     updateNavigationButtons();
+    updateDifficultButton();
 }
 
 function updateReadingNavigationButtons() {
