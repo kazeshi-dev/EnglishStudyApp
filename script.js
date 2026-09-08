@@ -74,6 +74,8 @@ const shuffleButton = document.getElementById("shuffle-button");
 const playAudioButton = document.getElementById("play-audio-button");
 const categorySelect = document.getElementById("category-select");
 const difficultButton = document.getElementById("difficult-button");
+const correctAnswerButton = document.getElementById("correct-answer-button");
+const incorrectAnswerButton = document.getElementById("incorrect-answer-button");
 
 function scrollToSection(section) {
 
@@ -138,6 +140,28 @@ let flashcardList = [
 ];
 
 let difficultFlashcards = [];
+
+const savedDifficultFlashcards = localStorage.getItem("difficultFlashcards");
+
+if (savedDifficultFlashcards !== null) {
+    const savedWords = JSON.parse(savedDifficultFlashcards);
+
+    difficultFlashcards = flashcardList.filter(
+        flashcard => savedWords.includes(flashcard.word)
+    );
+}
+
+correctAnswerButton.addEventListener("click", () => {
+    const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
+
+    registerVocabularyAnswer(currentFlashcard.word, true);
+});
+
+incorrectAnswerButton.addEventListener("click", () => {
+    const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
+
+    registerVocabularyAnswer(currentFlashcard.word, false);
+});
 
 let readingList = [
 
@@ -360,7 +384,8 @@ let progressData = {
     completed: 0,
     correct: 0,
     incorrect: 0,
-    completedExercises: []
+    completedExercises: [],
+    vocabularyStats: {}
 };
 let selectedCategory = "All Categories";
 let filteredFlashcards = [...flashcardList];
@@ -379,6 +404,11 @@ difficultButton.addEventListener("click", () => {
 
         difficultButton.textContent = "⭐ Difficult ✓";
     }
+
+    localStorage.setItem(
+        "difficultFlashcards",
+        JSON.stringify(difficultFlashcards.map(flashcard => flashcard.word))
+    );
 });
 
 function updateDifficultButton() {
@@ -412,7 +442,29 @@ if (savedProgress !== null) {
     progressData = JSON.parse(savedProgress);
 }
 
-function registerAnswer(exerciseId, isCorrect) {
+if (!progressData.vocabularyStats) {
+    progressData.vocabularyStats = {};
+}
+
+function registerVocabularyAnswer(word, isCorrect) {
+
+    if (!progressData.vocabularyStats[word]) {
+        progressData.vocabularyStats[word] = {
+            correct: 0,
+            incorrect: 0
+        };
+    }
+
+    if (isCorrect) {
+        progressData.vocabularyStats[word].correct++;
+    } else {
+        progressData.vocabularyStats[word].incorrect++;
+    }
+
+    localStorage.setItem("progressData", JSON.stringify(progressData));
+}
+
+function registerAnswer(exerciseId, isCorrect, vocabularyWord = null) {
 
     if (progressData.completedExercises.includes(exerciseId)) {
         return;
@@ -426,6 +478,22 @@ function registerAnswer(exerciseId, isCorrect) {
         progressData.correct++;
     } else {
         progressData.incorrect++;
+    }
+
+    if (vocabularyWord !== null) {
+
+        if (!progressData.vocabularyStats[vocabularyWord]) {
+            progressData.vocabularyStats[vocabularyWord] = {
+                correct: 0,
+                incorrect: 0
+            };
+        }
+
+        if (isCorrect) {
+            progressData.vocabularyStats[vocabularyWord].correct++;
+        } else {
+            progressData.vocabularyStats[vocabularyWord].incorrect++;
+        }
     }
 
     localStorage.setItem("progressData", JSON.stringify(progressData));
