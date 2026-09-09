@@ -2,6 +2,7 @@ console.log("English Study App loaded!");
 
 const progressSection = document.querySelector("#progress-section");
 const progress = document.querySelector("#progress");
+const vocabularyStatsList = document.getElementById("vocabulary-stats-list");
 
 const completedCount = document.querySelector("#completed-count");
 const correctCount = document.querySelector("#correct-count");
@@ -410,6 +411,30 @@ difficultButton.addEventListener("click", () => {
         JSON.stringify(difficultFlashcards.map(flashcard => flashcard.word))
     );
 });
+
+function updateVocabularyStats() {
+
+    vocabularyStatsList.innerHTML = "";
+
+    const vocabularyStats = progressData.vocabularyStats;
+
+    for (const word in vocabularyStats) {
+
+        const stats = vocabularyStats[word];
+
+        const vocabularyStat = document.createElement("div");
+
+        vocabularyStat.classList.add("vocabulary-stat");
+
+        vocabularyStat.innerHTML = `
+            <strong>${word}</strong>
+            <span>✓ Correct: ${stats.correct}</span>
+            <span>✗ Incorrect: ${stats.incorrect}</span>
+        `;
+
+        vocabularyStatsList.appendChild(vocabularyStat);
+    }
+}
 
 function updateDifficultButton() {
     const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
@@ -928,6 +953,7 @@ progress.addEventListener("click", function () {
     progressSection.style.display = "block";
 
     updateProgress();
+    updateVocabularyStats();
 
     scrollToSection(progressSection);
 
