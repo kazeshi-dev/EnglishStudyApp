@@ -139,6 +139,15 @@ header p {
         padding: 25px 20px;
     }
 
+    .category-filter,
+    .study-direction,
+    .review-mode {
+        display: flex;
+
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
 }
 
 .flashcards-section {
@@ -147,15 +156,6 @@ header p {
     padding: 80px 20px;
 
     text-align: center;
-}
-
-.category-filter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-
-    margin-top: 25px;
 }
 
 .category-filter label {
@@ -191,13 +191,22 @@ header p {
     box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
 }
 
+.category-filter,
 .study-direction {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
 
-    margin-top: 20px;
+    vertical-align: top;
+}
+
+.category-filter {
+    margin-top: 25px;
+}
+
+.study-direction {
+    margin-top: 25px;
 }
 
 .study-direction label {
@@ -299,8 +308,13 @@ header p {
 }
 
 .review-mode {
-    margin-top: 20px;
-    text-align: center;
+    display: inline-flex;
+    align-items: center;
+
+    margin-top: 50px;
+    margin-left: 20px;
+
+    vertical-align: top;
 }
 
 .navigation {
