@@ -191,6 +191,48 @@ header p {
     box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
 }
 
+.study-direction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 20px;
+}
+
+.study-direction label {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.study-direction select {
+    width: 220px;
+    padding: 10px 14px;
+
+    background-color: var(--surface);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.study-direction select:hover {
+    border-color: var(--primary);
+}
+
+.study-direction select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
 .study-card {
     margin: 40px auto 0;
     padding: 35px;

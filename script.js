@@ -74,6 +74,20 @@ const reviewButton = document.getElementById("review-button");
 const shuffleButton = document.getElementById("shuffle-button");
 const playAudioButton = document.getElementById("play-audio-button");
 const categorySelect = document.getElementById("category-select");
+const studyDirectionSelect = document.getElementById("study-direction-select");
+let studyDirection = "english-spanish";
+const savedStudyDirection = localStorage.getItem("studyDirection");
+
+if (savedStudyDirection !== null) {
+    studyDirection = savedStudyDirection;
+    studyDirectionSelect.value = savedStudyDirection;
+}
+
+studyDirectionSelect.addEventListener("change", () => {
+    studyDirection = studyDirectionSelect.value;
+
+    localStorage.setItem("studyDirection", studyDirection);
+});
 const difficultButton = document.getElementById("difficult-button");
 const correctAnswerButton = document.getElementById("correct-answer-button");
 const incorrectAnswerButton = document.getElementById("incorrect-answer-button");
@@ -436,6 +450,17 @@ function updateVocabularyStats() {
     }
 }
 
+function updateCardWord() {
+
+    const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
+
+    if (studyDirection === "english-spanish") {
+        cardWord.textContent = currentFlashcard.word;
+    } else {
+        cardWord.textContent = currentFlashcard.translation;
+    }
+}
+
 function updateDifficultButton() {
     const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
 
@@ -554,14 +579,20 @@ updateDifficultButton();
 
 cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
 
-cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
-
+updateCardWord();
 
 revealButton.addEventListener("click", function () {
 
+    const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
+
     if (isRevealed === false) {
 
-        translation.textContent = filteredFlashcards[flashcardOrder[currentCard]].translation;
+        if (studyDirection === "english-spanish") {
+            translation.textContent = currentFlashcard.translation;
+        } else {
+            translation.textContent = currentFlashcard.word;
+        }
+
         isRevealed = true;
         revealButton.textContent = "Hide";
 
@@ -570,18 +601,15 @@ revealButton.addEventListener("click", function () {
         translation.textContent = "";
         isRevealed = false;
         revealButton.textContent = "Reveal";
-
     }
-
 });
-
 nextButton.addEventListener("click", function () {
 
     if (currentCard < filteredFlashcards.length - 1) {
         currentCard++;
     }
 
-    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    updateCardWord();
     cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
 
     translation.textContent = "";
@@ -599,7 +627,7 @@ previousButton.addEventListener("click", function () {
         currentCard--;
     }
 
-    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    updateCardWord();
     cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
     translation.textContent = "";
     isRevealed = false;
@@ -635,7 +663,7 @@ categorySelect.addEventListener("change", () => {
     selectedCategory = categorySelect.value;
     filterFlashcards();
 
-    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    updateCardWord();
     cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
 
     translation.textContent = "";
@@ -654,7 +682,7 @@ reviewButton.addEventListener("click", () => {
     flashcardOrder = filteredFlashcards.map((_, index) => index);
     currentCard = 0;
 
-    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    updateCardWord();
     cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
     translation.textContent = "";
     isRevealed = false;
@@ -669,7 +697,7 @@ function shuffleFlashcards() {
     flashcardOrder.sort(() => Math.random() - 0.5);
     currentCard = 0;
 
-    cardWord.textContent = filteredFlashcards[flashcardOrder[currentCard]].word;
+    updateCardWord();
     cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
 
     translation.textContent = "";
