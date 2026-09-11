@@ -681,14 +681,18 @@ header p {
     font-size: 32px;
 }
 
-.vocabulary-stats {
-    max-width: 600px;
-    margin: 40px auto 0;
-    padding: 30px;
+.vocabulary-stat {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 10px 30px;
 
-    background-color: var(--surface);
+    padding: 15px 20px;
+    margin-bottom: 12px;
+
+    background-color: var(--background);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 10px;
 }
 
 .vocabulary-stats h3 {
@@ -730,4 +734,63 @@ header p {
 
 .vocabulary-stat span:last-of-type {
     color: var(--error);
+}
+
+.vocabulary-stat span:last-of-type {
+    color: var(--error);
+}
+
+.vocabulary-stat .status {
+    font-weight: 600;
+}
+
+.vocabulary-stat .status {
+    grid-column: 1 / -1;
+    margin-top: 5px;
+
+    font-weight: 600;
+    text-align: left;
+}
+
+.vocabulary-stat .status.strong {
+    color: var(--primary);
+}
+
+.vocabulary-stat .status.practice {
+    color: var(--text-secondary);
+}
+
+.vocabulary-stat .status.struggling {
+    color: var(--error);
+}
+
+.vocabulary-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.summary-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    padding: 12px;
+
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.summary-stat span {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.summary-stat strong {
+    color: var(--text);
+    font-size: 20px;
 }

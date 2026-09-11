@@ -3,6 +3,9 @@ console.log("English Study App loaded!");
 const progressSection = document.querySelector("#progress-section");
 const progress = document.querySelector("#progress");
 const vocabularyStatsList = document.getElementById("vocabulary-stats-list");
+const strongCount = document.getElementById("strong-count");
+const practiceCount = document.getElementById("practice-count");
+const strugglingCount = document.getElementById("struggling-count");
 
 const completedCount = document.querySelector("#completed-count");
 const correctCount = document.querySelector("#correct-count");
@@ -430,11 +433,28 @@ function updateVocabularyStats() {
 
     vocabularyStatsList.innerHTML = "";
 
+    let strong = 0;
+    let needsPractice = 0;
+    let struggling = 0;
+
     const vocabularyStats = progressData.vocabularyStats;
 
     for (const word in vocabularyStats) {
 
         const stats = vocabularyStats[word];
+
+        let status = "";
+
+        if (stats.correct > stats.incorrect) {
+            status = "Strong";
+            strong++;
+        } else if (stats.incorrect > stats.correct) {
+            status = "Struggling";
+            struggling++;
+        } else if (stats.correct > 0 || stats.incorrect > 0) {
+            status = "Needs Practice";
+            needsPractice++;
+        }
 
         const vocabularyStat = document.createElement("div");
 
@@ -444,10 +464,15 @@ function updateVocabularyStats() {
             <strong>${word}</strong>
             <span>✓ Correct: ${stats.correct}</span>
             <span>✗ Incorrect: ${stats.incorrect}</span>
+            <span class="status ${status === "Strong" ? "strong" : status === "Needs Practice" ? "practice" : "struggling"}">${status}</span>
         `;
 
         vocabularyStatsList.appendChild(vocabularyStat);
     }
+
+    strongCount.textContent = strong;
+    practiceCount.textContent = needsPractice;
+    strugglingCount.textContent = struggling;
 }
 
 function updateCardWord() {
