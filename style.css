@@ -307,14 +307,32 @@ header p {
     margin-bottom: 30px;
 }
 
+.answer-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
 .review-mode {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    gap: 15px;
 
     margin-top: 50px;
-    margin-left: 20px;
+}
 
-    vertical-align: top;
+#smart-review-message {
+    flex-basis: 100%;
+    margin: 5px 0 0;
+
+    color: var(--text-secondary);
+    font-size: 14px;
+    text-align: center;
 }
 
 .navigation {

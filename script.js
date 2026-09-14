@@ -75,6 +75,8 @@ const cardProgress = document.querySelector(".card-progress");
 
 const reviewButton = document.getElementById("review-button");
 const shuffleButton = document.getElementById("shuffle-button");
+const smartReviewMessage = document.getElementById("smart-review-message");
+const smartReviewButton = document.getElementById("smart-review-button");
 const playAudioButton = document.getElementById("play-audio-button");
 const categorySelect = document.getElementById("category-select");
 const studyDirectionSelect = document.getElementById("study-direction-select");
@@ -475,6 +477,28 @@ function updateVocabularyStats() {
     strugglingCount.textContent = struggling;
 }
 
+function getSmartReviewWords() {
+
+    const smartReviewWords = [];
+
+    for (const word in progressData.vocabularyStats) {
+
+        const stats = progressData.vocabularyStats[word];
+
+        if (stats.incorrect > stats.correct) {
+            const flashcard = flashcardList.find(
+                flashcard => flashcard.word === word
+            );
+
+            if (flashcard) {
+                smartReviewWords.push(flashcard);
+            }
+        }
+    }
+
+    return smartReviewWords;
+}
+
 function updateCardWord() {
 
     const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
@@ -709,6 +733,35 @@ reviewButton.addEventListener("click", () => {
 
     updateCardWord();
     cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
+    translation.textContent = "";
+    isRevealed = false;
+    revealButton.textContent = "Reveal";
+
+    updateNavigationButtons();
+    updateDifficultButton();
+});
+
+smartReviewButton.addEventListener("click", () => {
+
+    const smartReviewWords = getSmartReviewWords();
+
+    if (smartReviewWords.length === 0) {
+        smartReviewMessage.textContent =
+        "🧠 No words need extra practice right now.";
+
+        return;
+    }
+
+    smartReviewMessage.textContent = "";
+    
+    filteredFlashcards = [...smartReviewWords];
+    flashcardOrder = filteredFlashcards.map((_, index) => index);
+    currentCard = 0;
+
+    updateCardWord();
+
+    cardProgress.textContent = `Card ${currentCard + 1} / ${filteredFlashcards.length}`;
+
     translation.textContent = "";
     isRevealed = false;
     revealButton.textContent = "Reveal";
