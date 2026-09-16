@@ -96,6 +96,7 @@ studyDirectionSelect.addEventListener("change", () => {
 const difficultButton = document.getElementById("difficult-button");
 const correctAnswerButton = document.getElementById("correct-answer-button");
 const incorrectAnswerButton = document.getElementById("incorrect-answer-button");
+const answerFeedback = document.getElementById("answer-feedback");
 
 function scrollToSection(section) {
 
@@ -172,15 +173,23 @@ if (savedDifficultFlashcards !== null) {
 }
 
 correctAnswerButton.addEventListener("click", () => {
+
     const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
 
     registerVocabularyAnswer(currentFlashcard.word, true);
+
+    answerFeedback.textContent = "✓ Answer recorded.";
+    answerFeedback.className = "correct";
 });
 
 incorrectAnswerButton.addEventListener("click", () => {
+
     const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
 
     registerVocabularyAnswer(currentFlashcard.word, false);
+
+    answerFeedback.textContent = "✗ Keep practicing this word.";
+    answerFeedback.className = "incorrect";
 });
 
 let readingList = [
