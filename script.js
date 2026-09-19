@@ -58,6 +58,7 @@ const answerOptions = document.querySelector(".answer-options");
 const checkButton = document.querySelector("#check-button");
 const answerResult = document.querySelector("#answer-result");
 const readingProgress = document.querySelector(".reading-progress");
+const readingLevelSelect = document.getElementById("reading-level-select");
 
 const listening = document.querySelector("#listening");
 const listeningSection = document.querySelector("#listening-section");
@@ -196,6 +197,7 @@ let readingList = [
 
     {
         title: "A Day at the Park",
+        level: "Beginner",
         text: "John went to the park. He met his friends and they played football.",
         question: "What did John do?",
         answers: [
@@ -208,6 +210,7 @@ let readingList = [
 
     {
         title: "A Day at School",
+        level: "Beginner",
         text: "Maria went to school early. She studied English and talked with her teacher.",
         question: "What did Maria study?",
         answers: [
@@ -220,6 +223,7 @@ let readingList = [
 
     {
         title: "A Morning Walk",
+        level: "Intermediate",
         text: "David woke up early and went for a walk. He enjoyed the fresh air and saw many birds.",
         question: "What did David see?",
         answers: [
@@ -232,6 +236,7 @@ let readingList = [
 
     {
         title: "A Rainy Day",
+        level: "Intermediate",
         text: "Sofia stayed at home because it was raining. She read a book and drank some hot chocolate.",
         question: "Why did Sofia stay at home?",
         answers: [
@@ -244,6 +249,7 @@ let readingList = [
 
     {
         title: "A Visit to the Library",
+        level: "Advanced",
         text: "Lucas visited the library after school. He found a book about animals and read it quietly.",
         question: "What kind of book did Lucas find?",
         answers: [
@@ -407,6 +413,8 @@ let currentListening = 0;
 let currentWriting = 0;
 let currentGame = 0;
 let currentReading = 0;
+let selectedReadingLevel = "All Levels";
+let filteredReadingList = [...readingList];
 let currentCard = 0;
 let flashcardOrder = flashcardList.map((_, index) => index);
 let progressData = {
@@ -542,6 +550,18 @@ function filterFlashcards() {
 
     flashcardOrder = filteredFlashcards.map((_, index) => index);
     currentCard = 0;
+}
+
+function filterReadingList() {
+    if (selectedReadingLevel === "All Levels") {
+        filteredReadingList = [...readingList];
+    } else {
+        filteredReadingList = readingList.filter(
+            reading => reading.level === selectedReadingLevel
+        );
+    }
+
+    currentReading = 0;
 }
 
 const savedProgress = localStorage.getItem("progressData");
@@ -800,24 +820,24 @@ function shuffleFlashcards() {
 function updateReadingNavigationButtons() {
 
     previousReadingButton.disabled = currentReading === 0;
-    nextReadingButton.disabled = currentReading === readingList.length - 1;
+    nextReadingButton.disabled = currentReading === filteredReadingList.length - 1;
 
 }
 
 function updateReading() {
 
-    readingTitle.textContent = readingList[currentReading].title;
-    readingText.textContent = readingList[currentReading].text;
-    questionText.textContent = readingList[currentReading].question;
+    readingTitle.textContent = filteredReadingList[currentReading].title;
+    readingText.textContent = filteredReadingList[currentReading].text;
+    questionText.textContent = filteredReadingList[currentReading].question;
 
-    readingProgress.textContent = `Reading ${currentReading + 1} / ${readingList.length}`;
+    readingProgress.textContent = `Reading ${currentReading + 1} / ${filteredReadingList.length}`;
 
     answerOptions.innerHTML = "";
 
     answerResult.textContent = "";
     answerResult.className = "";
 
-    readingList[currentReading].answers.forEach(function (answer, index) {
+    filteredReadingList[currentReading].answers.forEach(function (answer, index) {
 
         const label = document.createElement("label");
         label.classList.add("answer-option");
@@ -842,9 +862,17 @@ function updateReading() {
 updateReading();
 updateReadingNavigationButtons();
 
+readingLevelSelect.addEventListener("change", () => {
+    selectedReadingLevel = readingLevelSelect.value;
+    filterReadingList();
+
+    updateReading();
+    updateReadingNavigationButtons();
+});
+
 nextReadingButton.addEventListener("click", function () {
 
-    if (currentReading < readingList.length - 1) {
+    if (currentReading < filteredReadingList.length - 1) {
         currentReading++;
     }
 
@@ -867,7 +895,7 @@ previousReadingButton.addEventListener("click", function () {
 checkButton.addEventListener("click", function () {
 
     const selectedAnswer = document.querySelector('input[name="answer"]:checked');
-    const exerciseId = `reading-${currentReading}`;
+    const exerciseId = `reading-${filteredReadingList[currentReading].title}`;
 
     if (selectedAnswer === null) {
 
