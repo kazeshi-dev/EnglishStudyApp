@@ -176,7 +176,7 @@ correctAnswerButton.addEventListener("click", () => {
 
     const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
 
-    registerVocabularyAnswer(currentFlashcard.word, true);
+    registerAnswer(null, true, currentFlashcard.word, true);
 
     answerFeedback.textContent = "✓ Answer recorded.";
     answerFeedback.className = "correct";
@@ -186,7 +186,7 @@ incorrectAnswerButton.addEventListener("click", () => {
 
     const currentFlashcard = filteredFlashcards[flashcardOrder[currentCard]];
 
-    registerVocabularyAnswer(currentFlashcard.word, false);
+    registerAnswer(null, false, currentFlashcard.word, false);
 
     answerFeedback.textContent = "✗ Keep practicing this word.";
     answerFeedback.className = "incorrect";
@@ -572,13 +572,16 @@ function registerVocabularyAnswer(word, isCorrect) {
     localStorage.setItem("progressData", JSON.stringify(progressData));
 }
 
-function registerAnswer(exerciseId, isCorrect, vocabularyWord = null) {
+function registerAnswer(exerciseId, isCorrect, vocabularyWord = null, allowRepeat = false) {
 
-    if (progressData.completedExercises.includes(exerciseId)) {
-        return;
+    if (!allowRepeat) {
+
+        if (progressData.completedExercises.includes(exerciseId)) {
+            return;
+        }
+
+        progressData.completedExercises.push(exerciseId);
     }
-
-    progressData.completedExercises.push(exerciseId);
 
     progressData.completed++;
 
