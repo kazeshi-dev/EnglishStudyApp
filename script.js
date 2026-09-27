@@ -59,6 +59,7 @@ const checkButton = document.querySelector("#check-button");
 const answerResult = document.querySelector("#answer-result");
 const readingProgress = document.querySelector(".reading-progress");
 const readingLevelSelect = document.getElementById("reading-level-select");
+const readingWordTranslation = document.getElementById("reading-word-translation");
 
 const listening = document.querySelector("#listening");
 const listeningSection = document.querySelector("#listening-section");
@@ -199,65 +200,104 @@ let readingList = [
         title: "A Day at the Park",
         level: "Beginner",
         text: "John went to the park. He met his friends and they played football.",
-        question: "What did John do?",
-        answers: [
-            "He played football",
-            "He went home",
-            "He studied"
-        ],
-        correctAnswer: 0
+        vocabulary: {
+            "park": "parque",
+            "friends": "amigos",
+            "football": "fútbol"
+        },
+        questions: [
+            {
+                question: "What did John do?",
+                answers: ["He played football", "He went home", "He studied"],
+                correctAnswer: 0
+            },
+            {
+                question: "Who did John meet?",
+                answers: ["His friends", "His teacher", "His family"],
+                correctAnswer: 0
+            }
+        ]
     },
 
     {
         title: "A Day at School",
         level: "Beginner",
         text: "Maria went to school early. She studied English and talked with her teacher.",
-        question: "What did Maria study?",
-        answers: [
-            "English",
-            "Math",
-            "History"
-        ],
-        correctAnswer: 0
+        vocabulary: {
+            "school": "escuela",
+            "studied": "estudió",
+            "teacher": "maestra"
+        },
+        questions: [
+            {
+                question: "What did Maria study?",
+                answers: ["English", "Math", "History"],
+                correctAnswer: 0
+            }
+        ]
     },
 
     {
         title: "A Morning Walk",
         level: "Intermediate",
         text: "David woke up early and went for a walk. He enjoyed the fresh air and saw many birds.",
-        question: "What did David see?",
-        answers: [
-            "Many birds",
-            "His teacher",
-            "A football game"
-        ],
-        correctAnswer: 0
+        vocabulary: {
+            "walk": "caminata",
+            "fresh": "fresco",
+            "birds": "pájaros"
+        },
+        questions: [
+            {
+                question: "What did David see?",
+                answers: ["Many birds", "His teacher", "A football game"],
+                correctAnswer: 0
+            },
+            {
+                question: "When did David wake up?",
+                answers: ["Early", "Late", "At noon"],
+                correctAnswer: 0
+            }
+        ]
     },
 
     {
         title: "A Rainy Day",
         level: "Intermediate",
         text: "Sofia stayed at home because it was raining. She read a book and drank some hot chocolate.",
-        question: "Why did Sofia stay at home?",
-        answers: [
-            "Because it was raining",
-            "Because she was studying",
-            "Because she went to the park"
-        ],
-        correctAnswer: 0
+        vocabulary: {
+            "raining": "lloviendo",
+            "book": "libro",
+            "chocolate": "chocolate"
+        },
+        questions: [
+            {
+                question: "Why did Sofia stay at home?",
+                answers: [
+                    "Because it was raining",
+                    "Because she was studying",
+                    "Because she went to the park"
+                ],
+                correctAnswer: 0
+            }
+        ]
     },
 
     {
         title: "A Visit to the Library",
         level: "Advanced",
         text: "Lucas visited the library after school. He found a book about animals and read it quietly.",
-        question: "What kind of book did Lucas find?",
-        answers: [
-            "A book about animals",
-            "A book about sports",
-            "A book about music"
-        ],
-        correctAnswer: 0
+        vocabulary: {
+            "library": "biblioteca",
+            "animals": "animales",
+            "quietly": "silenciosamente"
+        },
+        questions: [
+            {
+                question: "What kind of book did Lucas find?",
+                answers: ["A book about animals", "A book about sports", "A book about music"],
+                correctAnswer: 0
+            }
+        ]
     }
 
 ];
@@ -413,6 +453,7 @@ let currentListening = 0;
 let currentWriting = 0;
 let currentGame = 0;
 let currentReading = 0;
+let currentQuestion = 0;
 let selectedReadingLevel = "All Levels";
 let filteredReadingList = [...readingList];
 let currentCard = 0;
@@ -562,6 +603,7 @@ function filterReadingList() {
     }
 
     currentReading = 0;
+    currentQuestion = 0;
 }
 
 const savedProgress = localStorage.getItem("progressData");
@@ -819,25 +861,36 @@ function shuffleFlashcards() {
 
 function updateReadingNavigationButtons() {
 
-    previousReadingButton.disabled = currentReading === 0;
-    nextReadingButton.disabled = currentReading === filteredReadingList.length - 1;
+    const isFirstQuestion = currentReading === 0 && currentQuestion === 0;
+
+    const isLastReading = currentReading === filteredReadingList.length - 1;
+    const isLastQuestionOfReading =
+        currentQuestion === filteredReadingList[currentReading].questions.length - 1;
+
+    previousReadingButton.disabled = isFirstQuestion;
+    nextReadingButton.disabled = isLastReading && isLastQuestionOfReading;
 
 }
 
 function updateReading() {
 
-    readingTitle.textContent = filteredReadingList[currentReading].title;
-    readingText.textContent = filteredReadingList[currentReading].text;
-    questionText.textContent = filteredReadingList[currentReading].question;
+    const currentReadingItem = filteredReadingList[currentReading];
+    const currentQuestionItem = currentReadingItem.questions[currentQuestion];
 
-    readingProgress.textContent = `Reading ${currentReading + 1} / ${filteredReadingList.length}`;
+    readingTitle.textContent = currentReadingItem.title;
+    renderReadingText(currentReadingItem);
+    questionText.textContent = currentQuestionItem.question;
+
+    readingProgress.textContent =
+        `Reading ${currentReading + 1} / ${filteredReadingList.length} · Question ${currentQuestion + 1} / ${currentReadingItem.questions.length}`;
 
     answerOptions.innerHTML = "";
 
     answerResult.textContent = "";
     answerResult.className = "";
+    readingWordTranslation.textContent = "";
 
-    filteredReadingList[currentReading].answers.forEach(function (answer, index) {
+    currentQuestionItem.answers.forEach(function (answer, index) {
 
         const label = document.createElement("label");
         label.classList.add("answer-option");
@@ -862,6 +915,41 @@ function updateReading() {
 updateReading();
 updateReadingNavigationButtons();
 
+function renderReadingText(readingItem) {
+
+    readingText.innerHTML = "";
+
+    const words = readingItem.text.split(" ");
+
+    words.forEach(function (word, index) {
+
+        const cleanWord = word.replace(/[.,!?]/g, "").toLowerCase();
+        const translation = readingItem.vocabulary && readingItem.vocabulary[cleanWord];
+
+        if (translation) {
+
+            const span = document.createElement("span");
+            span.textContent = word;
+            span.classList.add("clickable-word");
+
+            span.addEventListener("click", () => {
+                readingWordTranslation.textContent = `${cleanWord} → ${translation}`;
+            });
+
+            readingText.appendChild(span);
+
+        } else {
+            readingText.appendChild(document.createTextNode(word));
+        }
+
+        if (index < words.length - 1) {
+            readingText.appendChild(document.createTextNode(" "));
+        }
+
+    });
+
+}
+
 readingLevelSelect.addEventListener("change", () => {
     selectedReadingLevel = readingLevelSelect.value;
     filterReadingList();
@@ -872,8 +960,13 @@ readingLevelSelect.addEventListener("change", () => {
 
 nextReadingButton.addEventListener("click", function () {
 
-    if (currentReading < filteredReadingList.length - 1) {
+    const currentQuestions = filteredReadingList[currentReading].questions;
+
+    if (currentQuestion < currentQuestions.length - 1) {
+        currentQuestion++;
+    } else if (currentReading < filteredReadingList.length - 1) {
         currentReading++;
+        currentQuestion = 0;
     }
 
     updateReading();
@@ -883,8 +976,11 @@ nextReadingButton.addEventListener("click", function () {
 
 previousReadingButton.addEventListener("click", function () {
 
-    if (currentReading > 0) {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+    } else if (currentReading > 0) {
         currentReading--;
+        currentQuestion = filteredReadingList[currentReading].questions.length - 1;
     }
 
     updateReading();
@@ -895,7 +991,8 @@ previousReadingButton.addEventListener("click", function () {
 checkButton.addEventListener("click", function () {
 
     const selectedAnswer = document.querySelector('input[name="answer"]:checked');
-    const exerciseId = `reading-${filteredReadingList[currentReading].title}`;
+    const currentReadingItem = filteredReadingList[currentReading];
+    const exerciseId = `reading-${currentReadingItem.title}-q${currentQuestion}`;
 
     if (selectedAnswer === null) {
 
@@ -906,7 +1003,9 @@ checkButton.addEventListener("click", function () {
 
     }
 
-    if (Number(selectedAnswer.value) === readingList[currentReading].correctAnswer) {
+    const currentQuestionItem = currentReadingItem.questions[currentQuestion];
+
+    if (Number(selectedAnswer.value) === currentQuestionItem.correctAnswer) {
 
         answerResult.textContent = "Correct!";
         answerResult.className = "correct";

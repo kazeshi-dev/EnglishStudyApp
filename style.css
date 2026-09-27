@@ -391,6 +391,23 @@ header p {
     line-height: 1.7;
 }
 
+.clickable-word {
+    color: var(--primary);
+    text-decoration: underline dotted;
+    cursor: pointer;
+}
+
+.clickable-word:hover {
+    color: var(--primary-hover);
+}
+
+#reading-word-translation {
+    margin-top: 15px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    min-height: 20px;
+}
+
 .reading-question {
     margin-top: 30px;
     padding-top: 25px;
