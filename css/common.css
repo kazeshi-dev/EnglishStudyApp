@@ -1,0 +1,154 @@
+html {
+    scroll-behavior: smooth;
+}
+
+:root {
+    --primary: #4CAF50;
+    --primary-hover: #3d9140;
+    --background: #121212;
+    --surface: #1c1c1c;
+    --border: #303030;
+    --text: #ffffff;
+    --text-secondary: #bdbdbd;
+    --error: #e57373;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+header {
+    text-align: center;
+    padding: 60px 20px 50px;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.main-nav {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.main-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: 0.2s ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--text);
+    border-color: var(--primary);
+}
+
+.button {
+    padding: 10px 24px;
+    font-size: 16px;
+    color: var(--text);
+    background-color: var(--primary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.button-primary {
+    background-color: var(--primary);
+}
+
+.button-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.button-secondary {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+}
+
+.button-secondary:hover {
+    background-color: var(--surface);
+    border-color: var(--primary);
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.study-card {
+    margin: 0 auto;
+    padding: 35px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.study-progress {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.answer-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.answer-option:hover {
+    transform: translateY(-2px);
+}
+
+.answer-option:has(input:checked) {
+    border-color: var(--primary);
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 60px 20px 35px;
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+    }
+
+    header p {
+        font-size: 0.95rem;
+    }
+}

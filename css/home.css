@@ -1,0 +1,45 @@
+.menu {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    padding: 20px;
+}
+
+.menu-card {
+    display: block;
+    padding: 30px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: 0.3s;
+}
+
+.menu-card h2 {
+    margin-bottom: 12px;
+    font-size: 1.5rem;
+}
+
+.menu-card p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.menu-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+@media (max-width: 480px) {
+    .menu {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .menu-card {
+        padding: 25px 20px;
+    }
+}

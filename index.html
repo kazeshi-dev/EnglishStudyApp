@@ -1,340 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>English Study App</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <script src="script.js" defer></script>
-
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/home.css">
 </head>
-
 <body>
 
     <header>
         <h1>English Study App</h1>
-
         <p>Learn. Practice. Improve.</p>
     </header>
 
     <main>
-
         <section class="menu">
 
-            <article class="menu-card" id="flashcards">
+            <a class="menu-card" href="pages/flashcards.html">
                 <h2>Flashcards</h2>
                 <p>Practice vocabulary with interactive flashcards.</p>
-            </article>
+            </a>
 
-            <article class="menu-card" id="mini-games">
+            <a class="menu-card" href="pages/mini-games.html">
                 <h2>Mini Games</h2>
                 <p>Improve your English through fun mini games.</p>
-            </article>
+            </a>
 
-            <article class="menu-card" id="reading">
+            <a class="menu-card" href="pages/reading.html">
                 <h2>Reading</h2>
                 <p>Practice reading comprehension with short stories.</p>
-            </article>
+            </a>
 
-            <article class="menu-card" id="listening">
+            <a class="menu-card" href="pages/listening.html">
                 <h2>Listening</h2>
                 <p>Improve your listening skills with audio exercises.</p>
-            </article>
-            <article class="menu-card" id="writing">
+            </a>
+
+            <a class="menu-card" href="pages/writing.html">
                 <h2>Writing</h2>
                 <p>Practice writing through interactive exercises.</p>
-            </article>
+            </a>
 
-            <article class="menu-card" id="progress">
+            <a class="menu-card" href="pages/progress.html">
                 <h2>Progress</h2>
                 <p>Track your learning progress and daily streak.</p>
-            </article>
+            </a>
 
         </section>
-
-        <section class="flashcards-section" id="flashcards-section">
-
-            <h2>Flashcards</h2>
-
-            <div class="category-filter">
-                <label for="category-select">Category</label>
-                <select id="category-select">
-                    <option value="All Categories">All Categories</option>
-                    <option value="Daily Life">Daily Life</option>
-                    <option value="People & Family">People & Family</option>
-                    <option value="Food & Drinks">Food & Drinks</option>
-                    <option value="Animals">Animals</option>
-                    <option value="School & Work">School & Work</option>
-                    <option value="Places & Travel">Places & Travel</option>
-                </select>
-            </div>
-
-            <div class="study-direction">
-                <label for="study-direction-select">Study Direction</label>
-
-                <select id="study-direction-select">
-                    <option value="english-spanish">English → Spanish</option>
-                    <option value="spanish-english">Spanish → English</option>
-                </select>
-            </div>
-
-            <div class="review-mode">
-                <button id="review-button" class="button button-secondary">
-                    ⭐ Review Difficult Words
-                </button>
-
-                <button id="smart-review-button" class="button button-secondary">
-                    🧠 Smart Review
-                </button>
-
-                <p id="smart-review-message"></p>
-
-            </div>
-
-            <div class="answer-actions">
-                <button id="correct-answer-button" class="button button-primary">
-                    ✓ I remembered
-                </button>
-
-                <button id="incorrect-answer-button" class="button button-secondary">
-                    ✗ I forgot
-                </button>
-
-                <p id="answer-feedback"></p>
-
-            </div>
-
-            <div class="study-card flashcard">
-
-                <span class="card-progress study-progress"></span>
-
-                <div class="card-word">
-                    <span>English</span>
-                    <h3 id="card-word"></h3>
-                    <button id="play-audio-button" class="button button-secondary">🔊 Listen</button>
-                </div>
-
-                <div class="card-translation">
-                    <span>Translation</span>
-                    <p id="translation"></p>
-                </div>
-
-                <div class="card-actions">
-                    <button id="reveal-button" class="button button-primary">Reveal</button>
-                    <button id="difficult-button" class="button button-secondary">⭐ Difficult</button>
-                </div>
-
-                <div class="navigation">
-                    <button id="previous-button" class="button button-secondary">Previous</button>
-                    <button id="next-button" class="button button-secondary">Next</button>
-                </div>
-
-                <button id="shuffle-button" class="button button-secondary">Shuffle</button>
-
-            </div>
-
-        </section>
-
-        <section class="reading-section" id="reading-section">
-
-            <h2>Reading</h2>
-
-            <div class="category-filter">
-                <label for="reading-level-select">Level</label>
-                <select id="reading-level-select">
-                    <option value="All Levels">All Levels</option>
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Advanced">Advanced</option>
-                </select>
-            </div>
-
-            <div class="study-card reading-card">
-
-                <span class="reading-progress study-progress"></span>
-
-                <h3 id="reading-title"></h3>
-
-                <p id="reading-text"></p>
-
-                <p id="reading-word-translation"></p>
-
-                <div class="reading-question">
-
-                    <h4 id="question-text"></h4>
-
-                        <div class="answer-options">
-                        </div>
-
-                        <button id="check-button" class="button button-primary">Check</button>
-
-                        <p id="answer-result"></p>
-
-                        <div class="reading-navigation">
-                            <button id="previous-reading-button" class="button button-secondary">Previous</button>
-                            <button id="next-reading-button" class="button button-secondary">Next</button>
-                        </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <section class="listening-section" id="listening-section">
-
-            <h2>Listening</h2>
-
-            <div class="study-card listening-card">
-
-                <span class="listening-progress study-progress"></span>
-
-                <h3 id="listening-title"></h3>
-
-                <audio id="listening-audio" controls></audio>
-
-                <div class="listening-question">
-
-                    <h4 id="listening-question-text"></h4>
-
-                    <div class="listening-answer-options">
-                    </div>
-
-                    <button id="check-listening-button" class="button button-primary">Check</button>
-
-                    <p id="listening-answer-result"></p>
-
-                    <div class="listening-navigation">
-                        <button id="previous-listening-button" class="button button-secondary">Previous</button>
-                        <button id="next-listening-button" class="button button-secondary">Next</button>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <section class="writing-section" id="writing-section">
-
-            <h2>Writing</h2>
-
-            <div class="study-card writing-card">
-
-                <span class="writing-progress study-progress"></span>
-
-                <h3 id="writing-title"></h3>
-
-                <p id="writing-prompt"></p>
-
-                <textarea id="writing-answer"></textarea>
-
-                <button id="check-writing-button" class="button button-primary">
-                    Check
-                </button>
-
-                <p id="writing-result"></p>
-
-                <div class="writing-navigation">
-                    <button id="previous-writing-button" class="button button-secondary">
-                        Previous
-                    </button>
-
-                    <button id="next-writing-button" class="button button-secondary">
-                        Next
-                    </button>
-                </div>
-
-            </div>
-
-        </section>
-
-        <section class="mini-games-section" id="mini-games-section">
-
-            <h2>Mini Games</h2>
-
-            <div class="study-card mini-game-card">
-
-                <span class="game-progress study-progress"></span>
-
-                <h3 id="game-title"></h3>
-
-                <p id="scrambled-word"></p>
-
-                <input type="text" id="game-answer" placeholder="Write your answer">
-
-                <button id="check-game-button" class="button button-primary">Check</button>
-
-                <p id="game-result"></p>
-
-                <div class="game-navigation">
-                    <button id="previous-game-button" class="button button-secondary">Previous</button>
-                    <button id="next-game-button" class="button button-secondary">Next</button>
-                </div>
-
-            </div>
-
-        </section>
-
-       <section class="progress-section" id="progress-section">
-
-            <h2>Progress</h2>
-
-            <div class="progress-card study-card">
-
-                <div class="progress-stat">
-                    <span>Exercises Completed</span>
-                    <strong id="completed-count"></strong>
-                </div>
-
-                <div class="progress-stat">
-                    <span>Correct Answers</span>
-                    <strong id="correct-count"></strong>
-                </div>
-
-                <div class="progress-stat">
-                    <span>Incorrect Answers</span>
-                    <strong id="incorrect-count"></strong>
-                </div>
-
-                <div class="progress-stat">
-                    <span>Accuracy</span>
-                    <strong id="accuracy"></strong>
-                </div>
-
-            </div>
-
-            <div class="vocabulary-stats">
-                <h3>Vocabulary Stats</h3>
-
-                <div class="vocabulary-summary">
-                    <div class="summary-stat">
-                        <span>Strong</span>
-                        <strong id="strong-count">0</strong>
-                    </div>
-
-                    <div class="summary-stat">
-                        <span>Needs Practice</span>
-                        <strong id="practice-count">0</strong>
-                    </div>
-
-                    <div class="summary-stat">
-                        <span>Struggling</span>
-                        <strong id="struggling-count">0</strong>
-                    </div>
-                </div>
-
-                <div id="vocabulary-stats-list"></div>
-            </div>
-
-        </section>
-
     </main>
 
 </body>
-
 </html>

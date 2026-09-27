@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards — English Study App</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/flashcards.css">
+    <script src="../js/common.js" defer></script>
+    <script src="../js/flashcards.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Flashcards</h1>
+        <nav class="main-nav">
+            <a href="../index.html">Home</a>
+            <a href="flashcards.html" class="active">Flashcards</a>
+            <a href="reading.html">Reading</a>
+            <a href="listening.html">Listening</a>
+            <a href="writing.html">Writing</a>
+            <a href="mini-games.html">Mini Games</a>
+            <a href="progress.html">Progress</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="flashcards-section">
+
+            <div class="filters-row">
+
+                <div class="category-filter">
+                    <div class="category-filter">
+                        <label for="category-select">Category</label>
+                        <select id="category-select">
+                            <option value="All Categories">All Categories</option>
+                            <option value="Daily Life">Daily Life</option>
+                            <option value="People & Family">People & Family</option>
+                            <option value="Food & Drinks">Food & Drinks</option>
+                            <option value="Animals">Animals</option>
+                            <option value="School & Work">School & Work</option>
+                            <option value="Places & Travel">Places & Travel</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="study-direction">
+                    <div class="study-direction">
+                        <label for="study-direction-select">Study Direction</label>
+                        <select id="study-direction-select">
+                            <option value="english-spanish">English → Spanish</option>
+                            <option value="spanish-english">Spanish → English</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="review-mode">
+                <button id="review-button" class="button button-secondary">
+                    ⭐ Review Difficult Words
+                </button>
+                <button id="smart-review-button" class="button button-secondary">
+                    🧠 Smart Review
+                </button>
+                <p id="smart-review-message"></p>
+            </div>
+
+            <div class="answer-actions">
+                <button id="correct-answer-button" class="button button-primary">
+                    ✓ I remembered
+                </button>
+                <button id="incorrect-answer-button" class="button button-secondary">
+                    ✗ I forgot
+                </button>
+                <p id="answer-feedback"></p>
+            </div>
+
+            <div class="study-card flashcard">
+                <span class="card-progress study-progress"></span>
+
+                <div class="card-word">
+                    <span>English</span>
+                    <h3 id="card-word"></h3>
+                    <button id="play-audio-button" class="button button-secondary">🔊 Listen</button>
+                </div>
+
+                <div class="card-translation">
+                    <span>Translation</span>
+                    <p id="translation"></p>
+                </div>
+
+                <div class="card-actions">
+                    <button id="reveal-button" class="button button-primary">Reveal</button>
+                    <button id="difficult-button" class="button button-secondary">⭐ Difficult</button>
+                </div>
+
+                <div class="navigation">
+                    <button id="previous-button" class="button button-secondary">Previous</button>
+                    <button id="next-button" class="button button-secondary">Next</button>
+                </div>
+
+                <button id="shuffle-button" class="button button-secondary">Shuffle</button>
+            </div>
+
+        </section>
+    </main>
+
+</body>
+</html>
